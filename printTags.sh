@@ -1,0 +1,2 @@
+# get everything after the first line, then the last line, then exclude known junk, then collect the tags, split them into lines, the sort and uniq
+for f in *.md; do tail -n +2 $f | tail -n 1 | grep -v "http" | grep -v "##" | grep -v " [a-zA-Z0-9]" | grep "#" | tr " " "\n"; echo ; done | sort | uniq
