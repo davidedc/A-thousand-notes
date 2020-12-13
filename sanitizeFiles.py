@@ -52,7 +52,7 @@ def sanitize(filename):
     # Remove all charcters below code point 32
     filename = "".join(c for c in filename if 31 < ord(c))
 
-    rx = re.compile(r'-{2,}')
+    rx = re.compile(r'-+')
     filename = rx.sub('-', filename)
     #filename = re.sub('\_+','_',filename)
 
