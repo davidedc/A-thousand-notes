@@ -3,6 +3,7 @@ import unicodedata
 import re
 import sys
 import os
+import ntpath
 
 def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
@@ -93,7 +94,7 @@ if not os.path.exists(fn):
     exit("no such path")
 
 fse = sys.getfilesystemencoding()
-listOfFiles = [unicode(x, fse) for x in glob.glob(os.path.normpath(fn) + "/*.md")]
+listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(fn) + "/*.md")]
 
 
 for eachFile in listOfFiles:
