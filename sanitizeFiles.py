@@ -33,8 +33,21 @@ def sanitize(filename):
     # remove accents
     filename = unicode(remove_accents(filename))
 
-    rx = re.compile(r"[\\\/\:\*\?\"\<\>\|\[\]\(\)\"'\. _,]")
+    filename = filename.replace("i.e.", "ie")
+    filename = filename.replace("&", " and ")
+    filename = filename.replace("@", " at ")
+    filename = filename.replace("that's", "thats")
+    filename = filename.replace("t-shirt", "tshirt")
+    filename = filename.replace("sci-fi", "scifi")
+    filename = filename.replace("it's", "it is")
+    filename = filename.replace("n't", "nt")
+    filename = filename.replace("'ve'", " have ")
+    filename = filename.replace("...", " and")
+
+    rx = re.compile(r"[\\\/\:\*\?\"\<\>\|\[\]\(\)\"'\. _,!]")
     filename = rx.sub('-', filename)
+
+    filename = filename.replace("-and-and", "-and")
 
     # Remove all charcters below code point 32
     filename = "".join(c for c in filename if 31 < ord(c))
