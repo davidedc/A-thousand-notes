@@ -34,21 +34,51 @@ def sanitize(filename):
     # remove accents
     filename = unicode(remove_accents(filename))
 
-    filename = filename.replace("i.e.", "ie")
+    # TODO must make some of these substitutions case-insensitive
+
+    filename = re.sub('i\.e\.', 'ie', filename, flags=re.IGNORECASE)
     filename = filename.replace("&", " and ")
     filename = filename.replace("@", " at ")
-    filename = filename.replace("that's", "thats")
-    filename = filename.replace("t-shirt", "tshirt")
-    filename = filename.replace("sci-fi", "scifi")
-    filename = filename.replace("it's", "it is")
-    filename = filename.replace("n't", "nt")
-    filename = filename.replace("'ve'", " have ")
-    filename = filename.replace("...", " and")
 
-    rx = re.compile(r"[\\\/\:\*\?\"\<\>\|\[\]\(\)\"'\. _,!]")
+    filename = re.sub('t-shirt', 'tshirt', filename, flags=re.IGNORECASE)
+    filename = re.sub('sci-fi', 'scifi', filename, flags=re.IGNORECASE)
+
+    filename = re.sub("'m", ' am ', filename, flags=re.IGNORECASE)
+
+    filename = re.sub("we're", 'we are', filename, flags=re.IGNORECASE)
+    filename = re.sub("you're", 'you are', filename, flags=re.IGNORECASE)
+    filename = re.sub("they're", 'they are', filename, flags=re.IGNORECASE)
+
+    # 's --------------------------------
+    filename = re.sub("that's", "thats", filename, flags=re.IGNORECASE)
+    filename = re.sub("let's ", "lets ", filename, flags=re.IGNORECASE)
+    filename = re.sub("it's", "it is", filename, flags=re.IGNORECASE)
+    filename = re.sub("he's", "he is", filename, flags=re.IGNORECASE)
+
+    filename = re.sub("what's", "what is", filename, flags=re.IGNORECASE)
+    filename = re.sub("where's", "where is", filename, flags=re.IGNORECASE)
+    filename = re.sub("who's", "who is", filename, flags=re.IGNORECASE)
+    filename = re.sub("when's", "when is", filename, flags=re.IGNORECASE)
+
+    filename = re.sub("'s", " ", filename, flags=re.IGNORECASE)
+    # -----------------------------------
+
+    filename = re.sub("can't", " cannot", filename, flags=re.IGNORECASE)
+    filename = re.sub("n't", " not", filename, flags=re.IGNORECASE)
+    filename = re.sub("'ll", " will", filename, flags=re.IGNORECASE)
+    filename = re.sub("'ve", " have", filename, flags=re.IGNORECASE)
+
+    filename = filename.replace("...", " and")
+    filename = filename.replace("+", "Plus")
+
+    filename = re.sub("C#", "C sharp", filename, flags=re.IGNORECASE)
+
+    filename = filename.replace("$", "dollar")
+
+    rx = re.compile(r"[\\\/\:\*\?\"\<\>\|\[\]\(\)\"'\. _,!~;\=#%\^{}`]")
     filename = rx.sub('-', filename)
 
-    filename = filename.replace("-and-and", "-and")
+    filename = re.sub("-and-and", "-and", filename, flags=re.IGNORECASE)
 
     # Remove all charcters below code point 32
     filename = "".join(c for c in filename if 31 < ord(c))
