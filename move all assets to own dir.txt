@@ -1,0 +1,3 @@
+cd modifiedExport1000notes
+mkdir assets
+find . -maxdepth 1 -type d -exec sh -c 'mv  "$@" assets' _ {} \;
