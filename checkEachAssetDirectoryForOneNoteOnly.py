@@ -215,7 +215,7 @@ for eachDirectory in listOfDirectories:
 
     tryingToFindTheMdFile = fn + "/" + originalDirectoryName + ".md"
     try:
-        with codecs.open(tryingToFindTheMdFile, encoding='utf-8') as file:
+        with codecs.open(tryingToFindTheMdFile, 'r', encoding='utf-8') as file:
             data = file.read()
             file.close()
             if data.find(unicode("![")) == -1:
