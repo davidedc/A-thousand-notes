@@ -51,7 +51,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>set enexFileNamesList to {"Evernote.enex", "Evernote [2].enex", "Evernote [3].enex", "Evernote [4].enex", "Evernote [5].enex", "Evernote [6].enex", "Evernote [7].enex", "Evernote [8].enex", "Evernote [9].enex", "Evernote [10].enex", "Evernote [11].enex", "Evernote [12].enex", "Evernote [13].enex", "Evernote [14].enex", "Evernote [15].enex", "Evernote [16].enex", "Evernote [17].enex", "Evernote [18].enex", "Evernote [19].enex", "Evernote [20].enex", "Evernote [21].enex", "Evernote [22].enex", "Evernote [23].enex", "Evernote [24].enex", "Evernote [25].enex", "Evernote [26].enex", "Evernote [27].enex"}repeat with enexFileName in enexFileNamesList	    tell the application named "Bear"        activate	end tell	# select “Import from…” and the “Evernote” from menu	tell application "System Events"		tell process "Bear"			tell menu bar 1				tell menu bar item "File"					tell menu "File"						tell menu item "Import from..."							tell menu "Import from..."								click menu item "Evernote"							end tell						end tell					end tell				end tell			end tell		end tell	end tell		delay 10		tell application "System Events" to keystroke enexFileName		delay 10		tell application "System Events"		key code 36	end tell		delay 10		set countOfWindows to 0	repeat until countOfWindows = 1		delay 10		tell application "System Events" to tell process "Bear" to set countOfWindows to (count of windows)		log countOfWindows	end repeat		delay 20	end repeat</string>
+					<string>set enexFileNamesList to {"Evernote.enex", "Evernote [2]", "Evernote [3", "Evernote [4", "Evernote [5", "Evernote [6", "Evernote [7", "Evernote [8", "Evernote [9", "Evernote [10", "Evernote [11", "Evernote [12", "Evernote [13", "Evernote [14", "Evernote [15", "Evernote [16", "Evernote [17", "Evernote [18", "Evernote [19", "Evernote [20", "Evernote [21", "Evernote [22", "Evernote [23", "Evernote [24", "Evernote [25", "Evernote [26", "Evernote [27"}repeat with enexFileName in enexFileNamesList			tell the application "Bear"		activate	end tell		# select “Import from…” and the “Evernote” from menu	tell application "System Events"		tell process "Bear"			tell menu bar 1				tell menu bar item "File"					tell menu "File"						tell menu item "Import from..."							tell menu "Import from..."								click menu item "Evernote"							end tell						end tell					end tell				end tell			end tell		end tell	end tell		delay 10		tell application "System Events" to keystroke enexFileName		delay 10		tell application "System Events"		key code 36	end tell		delay 10		set countOfWindows to 0	repeat until countOfWindows = 1		delay 10		tell application "System Events" to tell process "Bear" to set countOfWindows to (count of windows)		log countOfWindows	end repeat		delay 20	end repeat</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -105,7 +105,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<integer>1</integer>
 				<key>location</key>
-				<string>309.000000:247.000000</string>
+				<string>408.500000:247.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
