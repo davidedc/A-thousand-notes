@@ -1,12 +1,10 @@
 # coding=utf-8
 
-import helper_routines
 import sys
 import os
 import glob
 import ntpath
 import codecs
-import urllib
 
 fn = sys.argv[1]
 if not os.path.exists(fn):
