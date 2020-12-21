@@ -1,1 +1,1 @@
-find . -maxdepth 1 -type f -exec sh -c 'grep "#fromEvernote" "$@"' _ {} \; | wc -l
+find . -maxdepth 1 -name "*.md" -exec sh -c 'grep "#fromEvernote" "$@"' sh {} + | wc -l
