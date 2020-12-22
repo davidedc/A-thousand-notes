@@ -20,7 +20,7 @@ listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normp
 print(listOfFiles)
 
 for eachFile in listOfFiles:
-    tryingToFindTheMdFile = fn + "/" + eachFile
+    tryingToFindTheMdFile = fn + eachFile
     try:
         #print(tryingToFindTheMdFile)
         with codecs.open(tryingToFindTheMdFile, 'r', encoding='utf-8') as file:
