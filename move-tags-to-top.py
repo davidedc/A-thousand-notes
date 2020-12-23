@@ -14,8 +14,8 @@ from datetime import datetime
 import math
 
 
-fn = sys.argv[1]
-if not os.path.exists(fn):
+notesPath = sys.argv[1]
+if not os.path.exists(notesPath):
     exit("no such path")
 
 fse = sys.getfilesystemencoding()
@@ -23,11 +23,11 @@ fse = sys.getfilesystemencoding()
 
 #print listOfDirectories
 
-listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(fn) + "/*.md")]
+listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
 
 
 for eachFile in listOfFiles:
-    tryingToFindTheMdFile = fn + eachFile
+    tryingToFindTheMdFile = notesPath + eachFile
     try:
         #print(tryingToFindTheMdFile)
         with codecs.open(tryingToFindTheMdFile, 'r', encoding='utf-8') as file:

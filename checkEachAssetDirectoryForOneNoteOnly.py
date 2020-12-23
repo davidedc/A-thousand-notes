@@ -8,18 +8,18 @@ import ntpath
 import codecs
 import urllib
 
-fn = sys.argv[1]
-if not os.path.exists(fn):
+notesPath = sys.argv[1]
+if not os.path.exists(notesPath):
     exit("no such path")
 
 fse = sys.getfilesystemencoding()
 
-listOfDirectories = [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(fn) + "/*/")]
+listOfDirectories = [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*/")]
 
 
 #print listOfDirectories
 
-listOfFiles = [fn + "/" + unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(fn) + "/*.md")]
+listOfFiles = [notesPath + "/" + unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
 
 counter = 1
 
@@ -213,7 +213,7 @@ for eachDirectory in listOfDirectories:
 
     directoryAsFoundInMd = unicode("![](" + eachDirectory + "/")
 
-    tryingToFindTheMdFile = fn + "/" + originalDirectoryName + ".md"
+    tryingToFindTheMdFile = notesPath + "/" + originalDirectoryName + ".md"
     try:
         with codecs.open(tryingToFindTheMdFile, 'r', encoding='utf-8') as file:
             data = file.read()
@@ -247,7 +247,7 @@ for eachDirectory in listOfDirectories:
                     break
 
     if howManyFilesPointToDir == 0:
-        tryingToFindTheMdFile = fn + "/" + originalDirectoryName + ".md"
+        tryingToFindTheMdFile = notesPath + "/" + originalDirectoryName + ".md"
         print(directoryAsFoundInMd)
         print("counter: " + str(counter) + " " + eachFile)
         try:

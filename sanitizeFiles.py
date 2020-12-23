@@ -4,12 +4,12 @@ import os
 import glob
 import ntpath
 
-fn = sys.argv[1]
-if not os.path.exists(fn):
+notesPath = sys.argv[1]
+if not os.path.exists(notesPath):
     exit("no such path")
 
 fse = sys.getfilesystemencoding()
-listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(fn) + "/*.md")]
+listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
 
 
 for eachFile in listOfFiles:
