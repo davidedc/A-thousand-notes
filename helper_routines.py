@@ -2,6 +2,11 @@ import unicodedata
 import re
 import os
 
+def checkPath(notesPath):
+    if not os.path.exists(notesPath):
+        exit("no such path")
+
+
 def creation_date(path_to_file):
     """
     Try to get the date that a file was created, falling back to when it was

@@ -5,10 +5,10 @@ import os
 import glob
 import ntpath
 import codecs
+from helper_routines import checkPath
 
 notesPath = sys.argv[1]
-if not os.path.exists(notesPath):
-    exit("no such path")
+checkPath(notesPath)
 
 fse = sys.getfilesystemencoding()
 

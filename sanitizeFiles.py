@@ -1,12 +1,11 @@
-import helper_routines
+from helper_routines import checkPath
 import sys
 import os
 import glob
 import ntpath
 
 notesPath = sys.argv[1]
-if not os.path.exists(notesPath):
-    exit("no such path")
+checkPath(notesPath)
 
 fse = sys.getfilesystemencoding()
 listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]

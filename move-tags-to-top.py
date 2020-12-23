@@ -3,6 +3,7 @@
 from helper_routines import creation_date
 from helper_routines import modification_date
 from helper_routines import access_date
+from helper_routines import checkPath
 
 import sys
 import os
@@ -15,8 +16,7 @@ import math
 
 
 notesPath = sys.argv[1]
-if not os.path.exists(notesPath):
-    exit("no such path")
+checkPath(notesPath)
 
 fse = sys.getfilesystemencoding()
 

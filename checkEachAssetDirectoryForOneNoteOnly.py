@@ -1,6 +1,7 @@
 # coding=utf-8
 
-import helper_routines
+from helper_routines import checkPath
+
 import sys
 import os
 import glob
@@ -9,8 +10,7 @@ import codecs
 import urllib
 
 notesPath = sys.argv[1]
-if not os.path.exists(notesPath):
-    exit("no such path")
+checkPath(notesPath)
 
 fse = sys.getfilesystemencoding()
 
