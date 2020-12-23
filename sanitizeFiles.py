@@ -1,4 +1,6 @@
 from helper_routines import checkPath
+from helper_routines import sanitize
+
 import sys
 import os
 import glob
@@ -12,7 +14,7 @@ listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normp
 
 
 for eachFile in listOfFiles:
-    sanitized = helper_routines.sanitize(eachFile)
+    sanitized = sanitize(eachFile)
     if sanitized != eachFile:
         #print(eachFile + " -> " + sanitized)
         print(sanitized)
