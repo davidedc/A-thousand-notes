@@ -4,7 +4,8 @@ from helper_routines import creation_date
 from helper_routines import modification_date
 from helper_routines import access_date
 from helper_routines import checkPath
-from helper_routines import getListOfFiles
+from helper_routines import getNotesFileNames
+from helper_routines import stripEmptyTailLines
 
 import sys
 import os
@@ -16,33 +17,32 @@ import math
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
-listOfFiles = getListOfFiles(notesPath)
+notesFileNames = getNotesFileNames(notesPath)
 
 
-for eachFile in listOfFiles:
-    tryingToFindTheMdFile = notesPath + eachFile
+for noteFileName in notesFileNames:
+    noteFilePath = notesPath + noteFileName
     try:
-        #print(tryingToFindTheMdFile)
-        with codecs.open(tryingToFindTheMdFile, 'r', encoding='utf-8') as file:
+        #print(noteFilePath)
+        with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
 
             lines = file.read().splitlines()
             file.close()
 
-            while lines[-1].strip() == "":
-              del lines[-1]
+            stripEmptyTailLines(lines)
 
             tag_line = lines[-1]
 
             if tag_line.find("#fromEvernote") == -1:
-                print eachFile + " > " + tag_line
+                print "ERROR: there should be a tag line in " + noteFileName + " found instead: >" + tag_line + "<"
             else:
               del lines[-1]
               lines.insert(0, "tags: " + tag_line)
 
-            #print(tryingToFindTheMdFile + " > " + tag_line)
-            theCreationDate = math.floor(creation_date(tryingToFindTheMdFile))
-            theModificationDate = math.floor(modification_date(tryingToFindTheMdFile))
-            theAccessDate = math.floor(access_date(tryingToFindTheMdFile))
+            #print(noteFilePath + " > " + tag_line)
+            theCreationDate = math.floor(creation_date(noteFilePath))
+            theModificationDate = math.floor(modification_date(noteFilePath))
+            theAccessDate = math.floor(access_date(noteFilePath))
             #print("     created: "  + str(theCreationDate) + " modified: " + str(theModificationDate))
             #print("     created: "  + str(datetime.utcfromtimestamp(theCreationDate)) + " modified: " + str(datetime.utcfromtimestamp(theModificationDate)))
 
@@ -50,10 +50,10 @@ for eachFile in listOfFiles:
             lines.insert(-1, "___")
             lines.insert(-1, "created: "  + str(datetime.utcfromtimestamp(theCreationDate)) + " modified: " + str(datetime.utcfromtimestamp(theModificationDate)))
 
-            with codecs.open(tryingToFindTheMdFile, 'w', encoding='utf-8') as fileW:
+            with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
                 fileW.write("\n".join(lines))
                 fileW.close()
-                os.utime(tryingToFindTheMdFile,(theAccessDate, theModificationDate))
+                os.utime(noteFilePath,(theAccessDate, theModificationDate))
 
     except Exception, e:
-        print("EXCEPTION" + str(e) )
+        print("ERROR: " + str(e) )

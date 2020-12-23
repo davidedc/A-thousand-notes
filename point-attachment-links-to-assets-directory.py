@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from helper_routines import checkPath
-from helper_routines import getListOfFiles
+from helper_routines import getNotesFileNames
 
 import sys
 import codecs
@@ -9,24 +9,24 @@ import codecs
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
-listOfFiles = getListOfFiles(notesPath)
+notesFileNames = getNotesFileNames(notesPath)
 
-print(listOfFiles)
+print(notesFileNames)
 
-for eachFile in listOfFiles:
-    tryingToFindTheMdFile = notesPath + eachFile
+for noteFileName in notesFileNames:
+    noteFilePath = notesPath + noteFileName
     try:
-        #print(tryingToFindTheMdFile)
-        with codecs.open(tryingToFindTheMdFile, 'r', encoding='utf-8') as file:
+        #print(noteFilePath)
+        with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
             data = file.read()
             file.close()
 
             data = data.replace(u"![](",u"![](assets/")
 
-            with codecs.open(tryingToFindTheMdFile, 'w', encoding='utf-8') as fileW:
-                print(tryingToFindTheMdFile)
+            with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                print(noteFilePath)
                 fileW.write(data)
                 fileW.close()
                 #raw_input("Press Enter to continue...")
-    except:
-        print("EXCEPTION")
+    except Exception, e:
+        print("ERROR: " + str(e) )

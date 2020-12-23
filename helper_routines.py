@@ -5,11 +5,16 @@ import sys
 import glob
 import ntpath
 
-def getListOfFiles(notesPath):
+
+def stripEmptyTailLines(lines):
+    while lines[-1].strip() == "":
+      del lines[-1]
+
+def getNotesFileNames(notesPath):
     fse = sys.getfilesystemencoding()
     return [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
 
-def getListOfDirectories(notesPath):
+def getAttachmentsDirectoryNames(notesPath):
     fse = sys.getfilesystemencoding()
     return [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*/")]
 
@@ -48,9 +53,9 @@ def remove_accents(input_str):
     return only_ascii
 
 # adapted from:
-# https://gitlab.com/jplusplus/sanitize-filename/-/blob/master/sanitize_filename/sanitize_filename.py
+# https://gitlab.com/jplusplus/sanitizeFileName-filename/-/blob/master/sanitizeFileName_filename/sanitizeFileName_filename.py
 
-def sanitize(filename):
+def sanitizeFileName(filename):
     """Return a fairly safe version of the filename.
 
     We don't limit ourselves to ascii, because we want to keep municipality

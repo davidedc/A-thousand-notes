@@ -1,8 +1,8 @@
 # coding=utf-8
 
 from helper_routines import checkPath
-from helper_routines import getListOfFiles
-from helper_routines import getListOfDirectories
+from helper_routines import getNotesFileNames
+from helper_routines import getAttachmentsDirectoryNames
 
 import sys
 import codecs
@@ -11,8 +11,8 @@ import codecs
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
-listOfFiles = getListOfFiles(notesPath)
-listOfDirectories = getListOfDirectories(notesPath)
+notesFileNames = getNotesFileNames(notesPath)
+attachmentsDirectoryNames = getAttachmentsDirectoryNames(notesPath)
 
 counter = 1
 
@@ -30,7 +30,7 @@ counter = 1
 # Nushell | A new type of shell.
 # DONE Moongift notes need japanese taken out
 
-for eachDirectory in listOfDirectories:
+for eachDirectory in attachmentsDirectoryNames:
     if counter < 1795:
         counter = counter + 1
         continue
@@ -206,30 +206,30 @@ for eachDirectory in listOfDirectories:
 
     directoryAsFoundInMd = unicode("![](" + eachDirectory + "/")
 
-    tryingToFindTheMdFile = notesPath + "/" + originalDirectoryName + ".md"
+    noteFilePath = notesPath + "/" + originalDirectoryName + ".md"
     try:
-        with codecs.open(tryingToFindTheMdFile, 'r', encoding='utf-8') as file:
+        with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
             data = file.read()
             file.close()
             if data.find(unicode("![")) == -1:
                 print("")
                 #print(directoryAsFoundInMd)
                 #print("counter: " + str(counter))
-                #print("####### the file " + tryingToFindTheMdFile +" exists but does not contain ANY link")
+                #print("####### the file " + noteFilePath +" exists but does not contain ANY link")
             elif data.find(directoryAsFoundInMd) == -1:
                 print(directoryAsFoundInMd)
                 print("counter: " + str(counter))
-                print("####### the file " + tryingToFindTheMdFile +" exists - some escaping is wrong")
+                print("####### the file " + noteFilePath +" exists - some escaping is wrong")
     except:
         print("")
         #print(directoryAsFoundInMd)
         #print("counter: " + str(counter))
-        #print("####### the file " + tryingToFindTheMdFile +" does not exist")
+        #print("####### the file " + noteFilePath +" does not exist")
 
     """
     howManyFilesPointToDir = 0
-    for eachFile in listOfFiles:
-        with codecs.open(eachFile, encoding='utf-8') as file:
+    for noteFileName in notesFileNames:
+        with codecs.open(noteFileName, encoding='utf-8') as file:
             data = file.read()
             file.close()
 
@@ -240,19 +240,19 @@ for eachDirectory in listOfDirectories:
                     break
 
     if howManyFilesPointToDir == 0:
-        tryingToFindTheMdFile = notesPath + "/" + originalDirectoryName + ".md"
+        noteFilePath = notesPath + "/" + originalDirectoryName + ".md"
         print(directoryAsFoundInMd)
-        print("counter: " + str(counter) + " " + eachFile)
+        print("counter: " + str(counter) + " " + noteFileName)
         try:
-            with codecs.open(tryingToFindTheMdFile, encoding='utf-8') as file:
+            with codecs.open(noteFilePath, encoding='utf-8') as file:
                 data = file.read()
                 file.close()
                 if data.find(unicode("![")) == -1:
-                    print("####### the file " + tryingToFindTheMdFile +" exists but does not contain ANY link")
+                    print("####### the file " + noteFilePath +" exists but does not contain ANY link")
                 else:
-                    print("####### the file " + tryingToFindTheMdFile +" exists - some escaping is wrong")
+                    print("####### the file " + noteFilePath +" exists - some escaping is wrong")
         except:
-            print("####### the file " + tryingToFindTheMdFile +" does not exist")
+            print("####### the file " + noteFilePath +" does not exist")
     """
 
 

@@ -1,6 +1,6 @@
 from helper_routines import checkPath
-from helper_routines import sanitize
-from helper_routines import getListOfFiles
+from helper_routines import sanitizeFileName
+from helper_routines import getNotesFileNames
 
 import sys
 import os
@@ -8,34 +8,34 @@ import os
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
-listOfFiles = getListOfFiles(notesPath)
+notesFileNames = getNotesFileNames(notesPath)
 
 
-for eachFile in listOfFiles:
-    sanitized = sanitize(eachFile)
-    if sanitized != eachFile:
-        #print(eachFile + " -> " + sanitized)
-        print(sanitized)
+for noteFileName in notesFileNames:
+    noteFileName_Sanitized = sanitizeFileName(noteFileName)
+    if noteFileName_Sanitized != noteFileName:
+        #print(noteFileName + " -> " + noteFileName_Sanitized)
+        print(noteFileName_Sanitized)
 
     '''
     # USE THIS TO CHECK any remaining unexpected chars
-    if not re.match(r'^[A-Za-z0-9-]+$', sanitized):
-        print(sanitized)
+    if not re.match(r'^[A-Za-z0-9-]+$', noteFileName_Sanitized):
+        print(noteFileName_Sanitized)
     '''
 
     '''
-    if re.match(r'.*-s-', sanitized):
-        print(sanitized)
+    if re.match(r'.*-s-', noteFileName_Sanitized):
+        print(noteFileName_Sanitized)
 
-    if re.match(r'.*-re-', sanitized):
-        print(sanitized)
+    if re.match(r'.*-re-', noteFileName_Sanitized):
+        print(noteFileName_Sanitized)
 
-    if re.match(r'.*-ve-', sanitized):
-        print(sanitized)
+    if re.match(r'.*-ve-', noteFileName_Sanitized):
+        print(noteFileName_Sanitized)
 
-    if re.match(r'.*-ll-', sanitized):
-        print(sanitized)
+    if re.match(r'.*-ll-', noteFileName_Sanitized):
+        print(noteFileName_Sanitized)
 
-    if re.match(r'.*-t-', sanitized):
-        print(sanitized)
+    if re.match(r'.*-t-', noteFileName_Sanitized):
+        print(noteFileName_Sanitized)
     '''
