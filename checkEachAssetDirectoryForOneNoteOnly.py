@@ -1,25 +1,18 @@
 # coding=utf-8
 
 from helper_routines import checkPath
+from helper_routines import getListOfFiles
+from helper_routines import getListOfDirectories
 
 import sys
-import os
-import glob
-import ntpath
 import codecs
-import urllib
+#import urllib
 
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
-fse = sys.getfilesystemencoding()
-
-listOfDirectories = [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*/")]
-
-
-#print listOfDirectories
-
-listOfFiles = [notesPath + "/" + unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
+listOfFiles = getListOfFiles(notesPath)
+listOfDirectories = getListOfDirectories(notesPath)
 
 counter = 1
 

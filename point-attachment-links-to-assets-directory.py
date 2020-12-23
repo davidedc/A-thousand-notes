@@ -1,21 +1,15 @@
 # coding=utf-8
 
-import sys
-import os
-import glob
-import ntpath
-import codecs
 from helper_routines import checkPath
+from helper_routines import getListOfFiles
+
+import sys
+import codecs
 
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
-fse = sys.getfilesystemencoding()
-
-
-#print listOfDirectories
-
-listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
+listOfFiles = getListOfFiles(notesPath)
 
 print(listOfFiles)
 

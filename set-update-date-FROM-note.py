@@ -4,13 +4,11 @@ from helper_routines import creation_date
 from helper_routines import modification_date
 from helper_routines import access_date
 from helper_routines import checkPath
+from helper_routines import getListOfFiles
 
 import sys
 import os
-import glob
-import ntpath
 import codecs
-import platform
 from datetime import datetime
 import math
 import dateutil.parser
@@ -21,12 +19,7 @@ from subprocess import call
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
-fse = sys.getfilesystemencoding()
-
-
-#print listOfDirectories
-
-listOfFiles = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
+listOfFiles = getListOfFiles(notesPath)
 
 
 for eachFile in listOfFiles:

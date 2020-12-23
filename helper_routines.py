@@ -1,6 +1,17 @@
 import unicodedata
 import re
 import os
+import sys
+import glob
+import ntpath
+
+def getListOfFiles(notesPath):
+    fse = sys.getfilesystemencoding()
+    return [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
+
+def getListOfDirectories(notesPath):
+    fse = sys.getfilesystemencoding()
+    return [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*/")]
 
 def checkPath(notesPath):
     if not os.path.exists(notesPath):
