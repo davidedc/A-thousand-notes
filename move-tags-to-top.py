@@ -1,5 +1,9 @@
 # coding=utf-8
 
+from helper_routines import creation_date
+from helper_routines import modification_date
+from helper_routines import access_date
+
 import sys
 import os
 import glob
@@ -8,29 +12,6 @@ import codecs
 import platform
 from datetime import datetime
 import math
-
-def creation_date(path_to_file):
-    """
-    Try to get the date that a file was created, falling back to when it was
-    last modified if that isn't possible.
-    See http://stackoverflow.com/a/39501288/1709587 for explanation.
-    """
-    if platform.system() == 'Windows':
-        return os.path.getctime(path_to_file)
-    else:
-        stat = os.stat(path_to_file)
-        try:
-            return stat.st_birthtime
-        except AttributeError:
-            # We're probably on Linux. No easy way to get creation dates here,
-            # so we'll settle for when its content was last modified.
-            return stat.st_mtime
-
-def modification_date(path_to_file):
-    return os.path.getmtime(path_to_file)
-
-def access_date(path_to_file):
-    return os.path.getatime(path_to_file)
 
 
 fn = sys.argv[1]
