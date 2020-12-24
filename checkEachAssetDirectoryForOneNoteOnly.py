@@ -31,13 +31,13 @@ counter = 1
 # DONE Moongift notes need japanese taken out
 
 for eachDirectory in attachmentsDirectoryNames:
-    if counter < 1795:
-        counter = counter + 1
-        continue
+    #if counter < 1795:
+    #    counter = counter + 1
+    #    continue
 
-    if eachDirectory.find("MOONGIFT") != -1:
-        counter = counter + 1
-        continue
+    #if eachDirectory.find("MOONGIFT") != -1:
+    #    counter = counter + 1
+    #    continue
 
     originalDirectoryName = eachDirectory
 
@@ -213,9 +213,9 @@ for eachDirectory in attachmentsDirectoryNames:
             file.close()
             if data.find(unicode("![")) == -1:
                 print("")
-                #print(directoryAsFoundInMd)
-                #print("counter: " + str(counter))
-                #print("####### the file " + noteFilePath +" exists but does not contain ANY link")
+                print(directoryAsFoundInMd)
+                print("counter: " + str(counter))
+                print("####### the file " + noteFilePath +" exists but does not contain ANY link")
             elif data.find(directoryAsFoundInMd) == -1:
                 print(directoryAsFoundInMd)
                 print("counter: " + str(counter))
