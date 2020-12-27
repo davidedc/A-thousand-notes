@@ -40,6 +40,7 @@ for eachDirectory in attachmentsDirectoryNames:
     directoryAsFoundInMd = unicode("![](" + eachDirectory + "/")
 
     howManyFilesPointToDir = 0
+    notesPointingToDir = []
     for noteFileName in notesFileNames:
         noteFilePath = notesPath + "/" + noteFileName
         with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
@@ -47,7 +48,13 @@ for eachDirectory in attachmentsDirectoryNames:
             file.close()
 
             if data.find(directoryAsFoundInMd) != -1:
+                notesPointingToDir.append(noteFileName)
                 howManyFilesPointToDir = howManyFilesPointToDir + 1
 
-    print("counter: " + str(howManyFilesPointToDir) + " " + originalDirectoryName)
+    if howManyFilesPointToDir == 0:
+        print("counter: " + str(howManyFilesPointToDir) + " " + originalDirectoryName)
+    elif howManyFilesPointToDir > 1:
+        print("counter: " + str(howManyFilesPointToDir) + " " + originalDirectoryName)
+        for noteFileName in notesPointingToDir:
+            print("  " + noteFileName)
 
