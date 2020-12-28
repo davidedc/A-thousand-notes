@@ -16,6 +16,10 @@ def getNotesFileNames(notesPath):
     fse = sys.getfilesystemencoding()
     return [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
 
+def getFileNames(path):
+    fse = sys.getfilesystemencoding()
+    return [ntpath.basename(x) for x in glob.glob(os.path.normpath(path) + "/*")]
+
 def getAttachmentsDirectoryNames(notesPath):
     fse = sys.getfilesystemencoding()
     return [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*/")]
