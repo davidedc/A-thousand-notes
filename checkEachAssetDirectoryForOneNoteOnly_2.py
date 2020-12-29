@@ -57,13 +57,18 @@ for eachDirectory in attachmentsDirectoryNames:
                 howManyFilesPointToDir = howManyFilesPointToDir + 1
 
     if howManyFilesPointToDir == 0:
-        print("counter: " + str(howManyFilesPointToDir) + " " + originalDirectoryName)
+        print(str(howManyFilesPointToDir) + " notes referencing directory " + originalDirectoryName)
     elif howManyFilesPointToDir > 1:
-        print("counter: " + str(howManyFilesPointToDir) + " " + originalDirectoryName)
+        print(str(howManyFilesPointToDir) + " notes referencing directory " + originalDirectoryName)
         for noteFileName in notesPointingToDir:
             print("  " + noteFileName)
         assetsFiles = getFileNames(notesPath + "/" + originalDirectoryName)
+
         print("    checking all assets:")
+
+        if len(assetsFiles) == 0:
+            print("      WARNING: NO ASSETS (directory can be deleted?)")
+
         for assetFile in assetsFiles:
             #print("      " + assetFile)
             assetAsFoundInMd = unicode("![](" + eachDirectory + "/" + bearEscapeDirectoryName(assetFile) + ")")
