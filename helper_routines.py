@@ -82,6 +82,7 @@ def bearEscapeDirectoryName(directoryName):
     directoryName = directoryName.replace(u"#","%23")
     directoryName = directoryName.replace(u"…","%E2%80%A6")
     directoryName = directoryName.replace(u"ü","%C3%BC")
+    directoryName = directoryName.replace(u"ù","%C3%B9") # LATIN SMALL LETTER U WITH GRAVE
     directoryName = directoryName.replace(u"[","%5B")
     directoryName = directoryName.replace(u"]","%5D")
     directoryName = directoryName.replace(u"í","%C3%AD")
@@ -211,7 +212,6 @@ def bearEscapeDirectoryName(directoryName):
     directoryName = directoryName.replace(u"õ","%C3%B5") # LATIN SMALL LETTER O WITH TILDE
     directoryName = directoryName.replace(u"÷","%C3%B7") # DIVISION SIGNo
     directoryName = directoryName.replace(u"ø","%C3%B8") # LATIN SMALL LETTER O WITH STROKE
-    directoryName = directoryName.replace(u"ù","%C3%B9") # LATIN SMALL LETTER U WITH GRAVE
     directoryName = directoryName.replace(u"ú","%C3%BA") # LATIN SMALL LETTER U WITH ACUTE
     directoryName = directoryName.replace(u"û","%C3%BB") # LATIN SMALL LETTER U WITH CIRCUMFLEX
     directoryName = directoryName.replace(u"ü","%C3%BC") # LATIN SMALL LETTER U WITH DIAERESIS
