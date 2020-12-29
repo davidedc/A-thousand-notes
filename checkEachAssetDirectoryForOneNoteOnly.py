@@ -17,20 +17,6 @@ attachmentsDirectoryNames = getAttachmentsDirectoryNames(notesPath)
 
 counter = 1
 
-# goessnerv2 has a directory but no link
-# Small Axe review Steve McQueen’s new film series is one of this year’s best - The Verge
-# p60s from Shazam
-# The Fifth Sense | i-D
-# nothke - itch.io
-# Refik Anadol – Media Artist + Director
-# Eigendecomposition of a matrix - Wikipedia
-# Alan Hart CV
-# Contract Borrows Rd - scan
-# How to dynamically create and extend classes in fizzylogo v1
-# Enhanced Morphs and mirroring across workspaces
-# Nushell | A new type of shell.
-# DONE Moongift notes need japanese taken out
-
 for eachDirectory in attachmentsDirectoryNames:
     #if counter < 1795:
     #    counter = counter + 1
