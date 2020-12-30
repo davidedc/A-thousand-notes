@@ -6,6 +6,8 @@ from helper_routines import access_date
 from helper_routines import checkPath
 from helper_routines import getNotesFileNames
 from helper_routines import stripEmptyTailLines
+from helper_routines import quotePathForShell
+
 
 import sys
 import os
@@ -56,7 +58,7 @@ for noteFileName in notesFileNames:
 
 
                 #command = 'SetFile -d ' + '"05/06/2019 "' + '00:00:00 ' + complete_path
-                command = 'SetFile -d ' + '"' + theSplitCreationDate[1] + "/" + theSplitCreationDate[2] + "/" + theSplitCreationDate[0] + " " + theSplit[2] + '" "' + noteFilePath.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`') + '"'
+                command = 'SetFile -d ' + '"' + theSplitCreationDate[1] + "/" + theSplitCreationDate[2] + "/" + theSplitCreationDate[0] + " " + theSplit[2] + '" ' + quotePathForShell(noteFilePath)
                 print(command)
                 call(command, shell=True)
 

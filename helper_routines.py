@@ -8,6 +8,9 @@ import glob
 import ntpath
 
 
+def quotePathForShell(thePath):
+    return '"' + thePath.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`') + '"'
+
 def stripEmptyTailLines(lines):
     while lines[-1].strip() == "":
       del lines[-1]
