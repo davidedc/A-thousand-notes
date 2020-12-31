@@ -1,0 +1,4 @@
+find . -maxdepth 1 -name "*.md" -exec sh -c 'grep -Ei "^<a href" "$@"' sh {} +
+
+also to find which links point to a file of a particular extension:
+find . -maxdepth 1 -name "*.md" -exec sh -c 'grep -Ei "^<a href" "$@"' sh {} + | grep "svg</a>" | wc -l
