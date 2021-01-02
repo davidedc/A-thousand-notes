@@ -72,6 +72,8 @@ def bearEscapeDirectoryName(directoryName):
     directoryName = directoryName.replace(" ", "%20")
     directoryName = directoryName.replace('"',"%22")
     directoryName = directoryName.replace(u"|","%7C")
+    #directoryName = directoryName.replace(u"?","%3F")
+
     #directoryName = directoryName.replace(u"'","%27")
 
 
