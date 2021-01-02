@@ -7,6 +7,9 @@ import sys
 import glob
 import ntpath
 
+from os import listdir
+from os.path import isfile, join
+
 
 def quotePathForShell(thePath):
     return '"' + thePath.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`') + '"'
@@ -20,8 +23,10 @@ def getNotesFileNames(notesPath):
     return [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
 
 def getFileNames(path):
-    fse = sys.getfilesystemencoding()
-    return [ntpath.basename(x) for x in glob.glob(os.path.normpath(path) + "/*")]
+    #fse = sys.getfilesystemencoding()
+    #return [ntpath.basename(x) for x in glob.glob(os.path.normpath(path) + "/*")]
+    return [f for f in listdir(path) if isfile(join(path, f))]
+
 
 def getAttachmentsDirectoryNames(notesPath):
     fse = sys.getfilesystemencoding()
