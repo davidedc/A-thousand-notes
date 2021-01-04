@@ -19,10 +19,12 @@ import string
 notesPath = sys.argv[1]
 checkPath(notesPath)
 
+NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
+
 notesFileNames = getNotesFileNames(notesPath)
 attachmentsDirectoryNames = getAttachmentsDirectoryNames(notesPath)
 
-FIX_DIRECTORIES = False
+FIX_ASSETS_REFERENCES = True
 
 """
 for eachDirectory in attachmentsDirectoryNames:
@@ -74,7 +76,7 @@ for eachDirectory in attachmentsDirectoryNames:
                 notesPointingToDir.append(noteFileName)
                 referencesToDirectoryCount = referencesToDirectoryCount + 1
 
-            complexMarkdownOccurrences_re = re.compile('\\[[^\\]]*\\]\\(' + re.escape("file:///Users/davidedellacasa/Public/10000notes/".lower() + eachDirectory_bearEscaped_lower + "/"))
+            complexMarkdownOccurrences_re = re.compile('\\[[^\\]]*\\]\\(' + re.escape(NOTES_ABSOLUTE_PATH.lower() + eachDirectory_bearEscaped_lower + "/"))
             #print(complexMarkdownOccurrences_re.pattern)
             #print(data_lower)
             if re.search(complexMarkdownOccurrences_re, data_lower):
@@ -107,13 +109,16 @@ for eachDirectory in attachmentsDirectoryNames:
             if assetFile == ".DS_Store":
                 continue
 
+            if not assetFile.endswith(".svg"):
+                continue
+
+
             assetFile_lower = assetFile.lower()
             assetFile_bearEscaped = bearEscapeDirectoryName(assetFile)
             assetFile_bearEscaped = assetFile_bearEscaped.replace(u"?","%3F")
 
             assetFile_bearEscaped_lower = assetFile_bearEscaped.lower()
 
-            plainReferencesToAsset = unicode("![](" + eachDirectory_bearEscaped + "/" + assetFile_bearEscaped + ")")
 
             howManyFilesPointToAsset = 0
             notesPointingToAsset = []
@@ -131,11 +136,14 @@ for eachDirectory in attachmentsDirectoryNames:
                     file.close()
 
 
+                    # ---------------------------------------------------------
+                    plainReferencesToAsset = unicode("![](" + eachDirectory_bearEscaped + "/" + assetFile_bearEscaped + ")")
                     if data.lower().find(plainReferencesToAsset.lower()) != -1:
                         notesPointingToAsset.append(noteFileName)
                         howManyFilesPointToAsset = howManyFilesPointToAsset + 1
 
-                    complexMarkdownOccurrences_re = re.compile(re.escape('\\[[^\\]]*\\]\\(' + "file:///Users/davidedellacasa/Public/10000notes/".lower() + eachDirectory_bearEscaped_lower + "/" + assetFile_bearEscaped_lower))
+                    # ---------------------------------------------------------
+                    complexMarkdownOccurrences_re = re.compile(re.escape('\\[[^\\]]*\\]\\(' + NOTES_ABSOLUTE_PATH.lower() + eachDirectory_bearEscaped_lower + "/" + assetFile_bearEscaped_lower))
                     #print(complexMarkdownOccurrences_re.pattern)
                     #print(data_lower)
                     if re.search(complexMarkdownOccurrences_re, data_lower):
@@ -145,7 +153,8 @@ for eachDirectory in attachmentsDirectoryNames:
                             howManyFilesPointToAsset = howManyFilesPointToAsset + 1
 
 
-                    markdownLinkToDirectory_re = re.compile(re.escape("[" + assetFile_lower + "](file:///Users/davidedellacasa/Public/10000notes/".lower() + eachDirectory_bearEscaped_lower + "/)" ))
+                    # ---------------------------------------------------------
+                    markdownLinkToDirectory_re = re.compile(re.escape("[" + assetFile_lower + "](" + NOTES_ABSOLUTE_PATH.lower() + eachDirectory_bearEscaped_lower + "/)" ))
                     #print(markdownLinkToDirectory_re.pattern)
                     #print(data_lower)
                     if re.search(markdownLinkToDirectory_re, data_lower):
@@ -154,6 +163,7 @@ for eachDirectory in attachmentsDirectoryNames:
                             howManyFilesPointToAsset = howManyFilesPointToAsset + 1
 
 
+                    # ---------------------------------------------------------
                     # TODO THESE REFERENCES HERE WILL HAVE TO BE FIXED
                     htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_bearEscaped_lower + "'>" + assetFile_lower + "</a>" ))
                     #print(htmlLinkToFileOccurrences_re.pattern)
@@ -169,20 +179,8 @@ for eachDirectory in attachmentsDirectoryNames:
             if howManyFilesPointToAsset == 0:
                 print("      ERROR: counter: " + str(howManyFilesPointToAsset) + " for asset " + eachDirectory + "/" + assetFile)
             elif howManyFilesPointToAsset == 1:
-                noteFileName = re.sub('\.md$', '', notesPointingToAsset[0])
-                #print(u"      ✓ " + unicode(assetFile) + u" in " + unicode(noteFileName))
 
-                if FIX_DIRECTORIES:
-                    newDirPath = notesPath + noteFileName
-                    noteFilePath = newDirPath + ".md"
-
-                    command = 'mkdir -p ' + quotePathForShell(newDirPath + "/")
-                    print("          " + command)
-                    call(command, shell=True)
-
-                    command = 'mv ' + quotePathForShell(originalDirectoryPath + "/" + assetFile) + " " + quotePathForShell(newDirPath + "/" + assetFile)
-                    print("          " + command)
-                    call(command, shell=True)
+                if FIX_ASSETS_REFERENCES:
 
                     try:
                         #print(noteFilePath)
@@ -190,11 +188,12 @@ for eachDirectory in attachmentsDirectoryNames:
                             data = file.read()
                             file.close()
 
-                            assetLinkAsItShouldBe = unicode("![](" + bearEscapeDirectoryName(noteFileName) + "/" + assetFile_bearEscaped + ")")
+                            htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_bearEscaped_lower + "'>" + assetFile_lower + "</a>" ), re.IGNORECASE)
+                            assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
 
 
                             #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
-                            data = re.sub(re.escape(plainReferencesToAsset), assetLinkAsItShouldBe, data, flags=re.IGNORECASE)
+                            data = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
 
                             with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
                                 print("          changing links in " + noteFilePath)
