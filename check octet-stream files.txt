@@ -1,0 +1,5 @@
+find . -type f -name '*.octet-stream' -print0 | while IFS= read -r -d '' file; do file -I "$file" ; done
+
+find . -type f -name '*.octet-stream' -print0 | while IFS= read -r -d '' file; do file -I "$file" | if grep -q "image/svg+xml"; then echo "$file"; mv -- "$file" "${file%.octet-stream}.svg"; fi ; done
+
+find . -type f -name '*.octet-stream' -print0 | while IFS= read -r -d '' file; do file -I "$file" | if grep -q "text/html"; then echo "$file"; mv -- "$file" "${file%.octet-stream}.html"; fi ; done
