@@ -109,14 +109,13 @@ for eachDirectory in attachmentsDirectoryNames:
             if assetFile == ".DS_Store":
                 continue
 
-            if not assetFile.endswith(".svg"):
+            if not assetFile.endswith(".html"):
                 continue
 
 
             assetFile_lower = assetFile.lower()
             assetFile_bearEscaped = bearEscapeDirectoryName(assetFile)
             assetFile_bearEscaped = assetFile_bearEscaped.replace(u"?","%3F")
-
             assetFile_bearEscaped_lower = assetFile_bearEscaped.lower()
 
 
@@ -178,8 +177,90 @@ for eachDirectory in attachmentsDirectoryNames:
 
             if howManyFilesPointToAsset == 0:
                 print("      ERROR: counter: " + str(howManyFilesPointToAsset) + " for asset " + eachDirectory + "/" + assetFile)
-            elif howManyFilesPointToAsset == 1:
 
+                if FIX_ASSETS_REFERENCES:
+
+                    try:
+                        #print(noteFilePath)
+                        with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
+                            data = file.read()
+                            file.close()
+
+
+                            """
+                            assetFile_butWebp = assetFile[:-4] + ".webp"
+                            assetFile_butWebp_lower = assetFile_butWebp.lower()
+                            assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
+                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
+
+
+                            # example:
+                            # <a href='main-qimg-d704ccd59944418e7f3c5e5810caf505.webp'>main-qimg-d704ccd59944418e7f3c5e5810caf505.webp</a>
+                            htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_butWebp_bearEscaped_lower + "'>" + assetFile_butWebp_lower + "</a>" ), re.IGNORECASE)
+                            assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
+                            #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
+                            data_new = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
+
+                            if data_new != data:
+                                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                                    print("          changing links in " + noteFilePath)
+                                    fileW.write(data_new)
+                                    fileW.close()
+                                    #raw_input("Press Enter to continue...")
+                            """
+
+
+
+                            """
+                            assetFile_butWebp = assetFile[:-4] + ".octet-stream"
+                            assetFile_butWebp_lower = assetFile_butWebp.lower()
+                            assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
+                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
+
+
+                            htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_butWebp_bearEscaped_lower + "'>" + assetFile_butWebp_lower + "</a>" ), re.IGNORECASE)
+                            assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
+                            #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
+                            data_new = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
+
+                            if data_new != data:
+                                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                                    print("          changing links in " + noteFilePath)
+                                    fileW.write(data_new)
+                                    fileW.close()
+                                    #raw_input("Press Enter to continue...")
+                            """
+
+                            # example:
+                            #<a href='image_23%2033.octet-stream'>image_23 33.octet-stream</a>
+                            #[image_23 33.html](file:///Users/davidedellacasa/Public/10000notes/duct%20tape%20typography%20-%20Google%20Search/image_23%2033.html)
+
+                            assetFile_butWebp = assetFile[:-5] + ".octet-stream"
+                            assetFile_butWebp_lower = assetFile_butWebp.lower()
+                            assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
+                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
+
+
+                            htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_butWebp_bearEscaped_lower + "'>" + assetFile_butWebp_lower + "</a>" ), re.IGNORECASE)
+                            assetLinkAsItShouldBe = "["+ assetFile +"]("+ NOTES_ABSOLUTE_PATH + eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
+                            #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
+                            data_new = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
+
+                            if data_new != data:
+                                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                                    print("          changing links in " + noteFilePath)
+                                    fileW.write(data_new)
+                                    fileW.close()
+                                    #raw_input("Press Enter to continue...")
+
+
+                    except Exception, e:
+                        print("ERROR: " + str(e) )
+            elif howManyFilesPointToAsset == 1:
+                """
                 if FIX_ASSETS_REFERENCES:
 
                     try:
@@ -190,18 +271,19 @@ for eachDirectory in attachmentsDirectoryNames:
 
                             htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_bearEscaped_lower + "'>" + assetFile_lower + "</a>" ), re.IGNORECASE)
                             assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
-
-
                             #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
-                            data = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
+                            data_new = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
 
                             with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
                                 print("          changing links in " + noteFilePath)
-                                fileW.write(data)
+                                fileW.write(data_new)
                                 fileW.close()
                                 #raw_input("Press Enter to continue...")
+
+
                     except Exception, e:
                         print("ERROR: " + str(e) )
+                """
 
 
             elif howManyFilesPointToAsset > 1:
