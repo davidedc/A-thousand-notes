@@ -24,7 +24,7 @@ NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
 notesFileNames = getNotesFileNames(notesPath)
 attachmentsDirectoryNames = getAttachmentsDirectoryNames(notesPath)
 
-FIX_ASSETS_REFERENCES = True
+FIX_ASSETS_REFERENCES = False
 
 """
 for eachDirectory in attachmentsDirectoryNames:
@@ -40,7 +40,7 @@ for eachDirectory in attachmentsDirectoryNames:
 
 for eachDirectory in attachmentsDirectoryNames:
 
-    #if eachDirectory.lower().find("Transaction listing monthly".lower()) == -1:
+    #if eachDirectory.lower().find("illustrated group theory".lower()) == -1:
     #    #print("skipping " + eachDirectory)
     #    continue
 
@@ -61,8 +61,11 @@ for eachDirectory in attachmentsDirectoryNames:
 
     for noteFileName in notesFileNames:
 
-        if noteFileName.lower().find(eachDirectoryStem.lower()) == -1:
+        if noteFileName[:-3].lower() != eachDirectory.lower():
             continue
+
+        #if noteFileName.lower().find(eachDirectoryStem.lower()) == -1:
+        #    continue
 
         noteFilePath = notesPath + "/" + noteFileName
 
@@ -77,6 +80,15 @@ for eachDirectory in attachmentsDirectoryNames:
                 referencesToDirectoryCount = referencesToDirectoryCount + 1
 
             complexMarkdownOccurrences_re = re.compile('\\[[^\\]]*\\]\\(' + re.escape(NOTES_ABSOLUTE_PATH.lower() + eachDirectory_bearEscaped_lower + "/"))
+            #print(complexMarkdownOccurrences_re.pattern)
+            #print(data_lower)
+            if re.search(complexMarkdownOccurrences_re, data_lower):
+                #print(" " + eachDirectory + " found (also) in form [something](directory) in note " + noteFileName)
+                if noteFileName not in notesPointingToDir:
+                    notesPointingToDir.append(noteFileName)
+                    referencesToDirectoryCount = referencesToDirectoryCount + 1
+
+            complexMarkdownOccurrences_re = re.compile('\\[[^\\]]*\\]\\(' + re.escape(eachDirectory_bearEscaped_lower + "/"))
             #print(complexMarkdownOccurrences_re.pattern)
             #print(data_lower)
             if re.search(complexMarkdownOccurrences_re, data_lower):
@@ -109,8 +121,8 @@ for eachDirectory in attachmentsDirectoryNames:
             if assetFile == ".DS_Store":
                 continue
 
-            if not assetFile.endswith(".html"):
-                continue
+            #if not assetFile.endswith(".svg"):
+            #    continue
 
 
             assetFile_lower = assetFile.lower()
@@ -124,8 +136,19 @@ for eachDirectory in attachmentsDirectoryNames:
 
             for noteFileName in notesFileNames:
 
-                if noteFileName.lower().find(eachDirectoryStem.lower()) == -1:
+
+                noteFileNameStem = noteFileName[:-3].rstrip().rstrip(string.digits).rstrip()
+
+                #print("checking with note: >" + noteFileNameStem.lower() + "<  >" + eachDirectoryStem.lower() + "<")
+
+
+                if noteFileName[:-3].lower() != eachDirectory.lower():
                     continue
+
+                #if noteFileNameStem.lower() != eachDirectoryStem.lower():
+                #    continue
+
+                #print("MATCH!!!! checking with note: " + noteFileName)
 
                 noteFilePath = notesPath + "/" + noteFileName
 
@@ -136,17 +159,22 @@ for eachDirectory in attachmentsDirectoryNames:
 
 
                     # ---------------------------------------------------------
-                    plainReferencesToAsset = unicode("![](" + eachDirectory_bearEscaped + "/" + assetFile_bearEscaped + ")")
-                    if data.lower().find(plainReferencesToAsset.lower()) != -1:
-                        notesPointingToAsset.append(noteFileName)
-                        howManyFilesPointToAsset = howManyFilesPointToAsset + 1
+                    plainReferencesToAsset = re.compile(re.escape("![](" + eachDirectory_bearEscaped_lower + "/" + assetFile_bearEscaped_lower + ")"))
+                    #print(plainReferencesToAsset.pattern)
+                    #print(data_lower)
+                    if re.search(plainReferencesToAsset, data_lower):
+                        #print(" " + assetFile + " found (also) in form [something](directory) in note " + noteFileName)
+                        if noteFileName not in notesPointingToAsset:
+                            notesPointingToAsset.append(noteFileName)
+                            howManyFilesPointToAsset = howManyFilesPointToAsset + 1
+
 
                     # ---------------------------------------------------------
-                    complexMarkdownOccurrences_re = re.compile(re.escape('\\[[^\\]]*\\]\\(' + NOTES_ABSOLUTE_PATH.lower() + eachDirectory_bearEscaped_lower + "/" + assetFile_bearEscaped_lower))
+                    complexMarkdownOccurrences_re = re.compile('\\[[^\\]]*\\]\\(' + re.escape(NOTES_ABSOLUTE_PATH.lower() + eachDirectory_bearEscaped_lower + "/" + assetFile_bearEscaped_lower + ")"))
                     #print(complexMarkdownOccurrences_re.pattern)
                     #print(data_lower)
                     if re.search(complexMarkdownOccurrences_re, data_lower):
-                        print(" " + assetFile + " found (also) in form [something](directory) in note " + noteFileName)
+                        #print(" " + assetFile + " found (also) in form [something](directory) in note " + noteFileName)
                         if noteFileName not in notesPointingToAsset:
                             notesPointingToAsset.append(noteFileName)
                             howManyFilesPointToAsset = howManyFilesPointToAsset + 1
@@ -168,7 +196,7 @@ for eachDirectory in attachmentsDirectoryNames:
                     #print(htmlLinkToFileOccurrences_re.pattern)
                     #print(data_lower)
                     if re.search(htmlLinkToFileOccurrences_re, data_lower):
-                        #print("html ref " + eachDirectory + "/" + assetFile + " in " + noteFileName)
+                        print("html ref " + eachDirectory + "/" + assetFile + " in " + noteFileName)
                         if noteFileName not in notesPointingToAsset:
                             notesPointingToAsset.append(noteFileName)
                             howManyFilesPointToAsset = howManyFilesPointToAsset + 1
@@ -233,6 +261,7 @@ for eachDirectory in attachmentsDirectoryNames:
                                     #raw_input("Press Enter to continue...")
                             """
 
+                            """
                             # example:
                             #<a href='image_23%2033.octet-stream'>image_23 33.octet-stream</a>
                             #[image_23 33.html](file:///Users/davidedellacasa/Public/10000notes/duct%20tape%20typography%20-%20Google%20Search/image_23%2033.html)
@@ -255,7 +284,55 @@ for eachDirectory in attachmentsDirectoryNames:
                                     fileW.write(data_new)
                                     fileW.close()
                                     #raw_input("Press Enter to continue...")
+                            """
 
+                            """
+                            # for octet-stream -> jpeg
+                            assetFile_butWebp = assetFile[:-5] + ".octet-stream"
+                            assetFile_butWebp_lower = assetFile_butWebp.lower()
+                            assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
+                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
+
+
+                            htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_butWebp_bearEscaped_lower + "'>" + assetFile_butWebp_lower + "</a>" ), re.IGNORECASE)
+                            assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
+                            #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
+                            data_new = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
+
+                            if data_new != data:
+                                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                                    print("          changing links in " + noteFilePath)
+                                    fileW.write(data_new)
+                                    fileW.close()
+                                    #raw_input("Press Enter to continue...")
+                            """
+
+                            # for svg+xml -> svg
+                            assetFile_butWebp = assetFile + "+xml"
+                            assetFile_butWebp_lower = assetFile_butWebp.lower()
+                            assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
+                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
+
+
+                            htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_butWebp_bearEscaped_lower + "'>" + assetFile_butWebp_lower + "</a>" ), re.IGNORECASE)
+                            print(htmlLinkToFileOccurrences_re.pattern)
+                            assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
+                            #print("it should be: " + assetLinkAsItShouldBe)
+                            #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
+                            data_new = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
+
+                            if data_new != data:
+                                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                                    print("          changing links in " + noteFilePath)
+                                    fileW.write(data_new)
+                                    fileW.close()
+                                    #raw_input("Press Enter to continue...")
+                            #else:
+                            #    print("          no substitution in " + noteFilePath)
+
+ 
 
                     except Exception, e:
                         print("ERROR: " + str(e) )
