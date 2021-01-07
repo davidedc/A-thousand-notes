@@ -121,7 +121,8 @@ for eachDirectory in attachmentsDirectoryNames:
             if assetFile == ".DS_Store":
                 continue
 
-            #if not assetFile.endswith(".svg"):
+            # all file types that need a link with absolute path TO THE DIRECTORY
+            #if not (assetFile.endswith(".psd") or assetFile.endswith(".zip") or assetFile.endswith(".pde") or assetFile.endswith(".swf")  or assetFile.endswith(".xlsb") or assetFile.endswith(".xlsx") or assetFile.endswith(".js") or assetFile.endswith(".love")):
             #    continue
 
 
@@ -308,6 +309,7 @@ for eachDirectory in attachmentsDirectoryNames:
                                     #raw_input("Press Enter to continue...")
                             """
 
+                            """
                             # for svg+xml -> svg
                             assetFile_butWebp = assetFile + "+xml"
                             assetFile_butWebp_lower = assetFile_butWebp.lower()
@@ -331,13 +333,13 @@ for eachDirectory in attachmentsDirectoryNames:
                                     #raw_input("Press Enter to continue...")
                             #else:
                             #    print("          no substitution in " + noteFilePath)
+                            """
 
  
 
                     except Exception, e:
                         print("ERROR: " + str(e) )
             elif howManyFilesPointToAsset == 1:
-                """
                 if FIX_ASSETS_REFERENCES:
 
                     try:
@@ -347,20 +349,26 @@ for eachDirectory in attachmentsDirectoryNames:
                             file.close()
 
                             htmlLinkToFileOccurrences_re = re.compile(re.escape("<a href='" + assetFile_bearEscaped_lower + "'>" + assetFile_lower + "</a>" ), re.IGNORECASE)
-                            assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
+
+                            # all file types that can be embedded with relative path
+                            #assetLinkAsItShouldBe = "![]("+ eachDirectory_bearEscaped + "/" + assetFile_bearEscaped +")"
+                            
+                            # all file types that need a link with absolute path TO THE DIRECTORY
+                            assetLinkAsItShouldBe = "["+assetFile+"]("+ NOTES_ABSOLUTE_PATH + eachDirectory_bearEscaped + "/)"
+
                             #insensitive_re = re.compile(re.escape(plainReferencesToAsset), re.IGNORECASE)
                             data_new = re.sub(htmlLinkToFileOccurrences_re, assetLinkAsItShouldBe, data)
 
-                            with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
-                                print("          changing links in " + noteFilePath)
-                                fileW.write(data_new)
-                                fileW.close()
-                                #raw_input("Press Enter to continue...")
+                            if data_new != data:
+                                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                                    print("          changing links in " + noteFilePath)
+                                    fileW.write(data_new)
+                                    fileW.close()
+                                    #raw_input("Press Enter to continue...")
 
 
                     except Exception, e:
                         print("ERROR: " + str(e) )
-                """
 
 
             elif howManyFilesPointToAsset > 1:
