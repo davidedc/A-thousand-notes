@@ -21,12 +21,13 @@ for noteFileName in notesFileNames:
             data = file.read()
             file.close()
 
-            data = data.replace(u"![](",u"![](assets/")
+            data_new = data.replace(u"![](",u"![](assets/")
 
-            with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
-                print(noteFilePath)
-                fileW.write(data)
-                fileW.close()
-                #raw_input("Press Enter to continue...")
+            if data_new != data:
+                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                    print(noteFilePath)
+                    fileW.write(data_new)
+                    fileW.close()
+                    #raw_input("Press Enter to continue...")
     except Exception, e:
         print("ERROR: " + str(e) )
