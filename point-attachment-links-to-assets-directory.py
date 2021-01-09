@@ -5,6 +5,10 @@ from helper_routines import getNotesFileNames
 
 import sys
 import codecs
+import re
+
+NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
+
 
 notesPath = sys.argv[1]
 checkPath(notesPath)
@@ -21,7 +25,9 @@ for noteFileName in notesFileNames:
             data = file.read()
             file.close()
 
-            data_new = data.replace(u"![](",u"![](assets/")
+            data_new = data.replace("]("+ NOTES_ABSOLUTE_PATH, "]("+ NOTES_ABSOLUTE_PATH + "assets/")
+            data_new = data_new.replace("![](", "![](assets/")
+
 
             if data_new != data:
                 with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
