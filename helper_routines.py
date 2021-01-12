@@ -232,31 +232,7 @@ def bearEscapeDirectoryName(directoryName):
     return directoryName
 
 
-# adapted from:
-# https://gitlab.com/jplusplus/sanitizeFileName-filename/-/blob/master/sanitizeFileName_filename/sanitizeFileName_filename.py
-
-def sanitizeFileName(filename):
-    """Return a fairly safe version of the filename.
-
-    We don't limit ourselves to ascii, because we want to keep municipality
-    names, etc, but we do want to get rid of anything potentially harmful,
-    and make sure we do not exceed Windows filename length limits.
-    Hence a less safe blacklist, rather than a whitelist.
-    """
-    reserved = [
-        "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
-        "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
-        "LPT6", "LPT7", "LPT8", "LPT9",
-    ]  # Reserved words on Windows
-
-    filename = "".join(c for c in filename if c != "\0")
-
-    filename = filename[:-3]
-
-    # remove accents
-    filename = unicode(remove_accents(filename))
-
-    # TODO must make some of these substitutions case-insensitive
+def wordSubstitutions(filename):
 
     filename = re.sub('i\.e\.', 'ie', filename, flags=re.IGNORECASE)
     filename = filename.replace("&", " and ")
@@ -293,9 +269,40 @@ def sanitizeFileName(filename):
     filename = filename.replace("...", " and")
     filename = filename.replace("+", "Plus")
 
-    filename = re.sub("C#", "C sharp", filename, flags=re.IGNORECASE)
+    filename = re.sub("C#", "CSharp", filename, flags=re.IGNORECASE)
+    filename = re.sub("javascript", "JS", filename, flags=re.IGNORECASE)
 
     filename = filename.replace("$", "dollar")
+
+    return filename
+
+
+# adapted from:
+# https://gitlab.com/jplusplus/sanitizeFileName-filename/-/blob/master/sanitizeFileName_filename/sanitizeFileName_filename.py
+
+def sanitizeFileName(filename):
+    """Return a fairly safe version of the filename.
+
+    We don't limit ourselves to ascii, because we want to keep municipality
+    names, etc, but we do want to get rid of anything potentially harmful,
+    and make sure we do not exceed Windows filename length limits.
+    Hence a less safe blacklist, rather than a whitelist.
+    """
+    reserved = [
+        "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
+        "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
+        "LPT6", "LPT7", "LPT8", "LPT9",
+    ]  # Reserved words on Windows
+
+    filename = "".join(c for c in filename if c != "\0")
+
+    filename = filename[:-3]
+
+    # remove accents
+    filename = unicode(remove_accents(filename))
+
+    # TODO must make some of these substitutions case-insensitive
+    filename = wordSubstitutions(filename)
 
     rx = re.compile(r"[\\\/\:\*\?\"\<\>\|\[\]\(\)\"'\. _,!~;\=#%\^{}`]")
     filename = rx.sub('-', filename)
