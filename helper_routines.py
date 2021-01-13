@@ -309,7 +309,7 @@ def sanitizeFileName(filename):
 
     filename = re.sub("-and-and", "-and", filename, flags=re.IGNORECASE)
 
-    # Remove all charcters below code point 32
+    # Remove all characters below code point 32
     filename = "".join(c for c in filename if 31 < ord(c))
 
     rx = re.compile(r'-+')
