@@ -5,6 +5,7 @@ from helper_routines import getNotesFileNames
 from helper_routines import wordSubstitutions
 from helper_routines import bearEscapeDirectoryName
 from helper_routines import quotePathForShell
+from helper_routines import sanitizeFileName
 
 
 from slugify import slugify
@@ -21,6 +22,9 @@ def mySlugify(input):
     input = re.sub("http-www-", "", input, flags=re.IGNORECASE)
     input = re.sub("https-www-", "", input, flags=re.IGNORECASE)
     input = re.sub("www-", "", input, flags=re.IGNORECASE)
+    input = re.sub("(-and)+", "-and", input, flags=re.IGNORECASE)
+    input = re.sub('sci-fi', 'scifi', input, flags=re.IGNORECASE)
+    input = re.sub('t-shirt', 'tshirt', input, flags=re.IGNORECASE)
     return re.sub("node-js", "nodejs", input, flags=re.IGNORECASE)
 
 
@@ -39,6 +43,7 @@ newNotesFilesNames = []
 
 # FOR THE TIME BEING THE FILES ARE NOT CHANGED
 notesFileNames = getNotesFileNames(notesPath)
+notesFileNames_lower = (x.lower() for x in notesFileNames)
 
 for noteFileName in notesFileNames:
 
@@ -65,7 +70,7 @@ for noteFileName in notesFileNames:
         slugFromNoteFileName_noExtension_substituted_stem = mySlugify(noteFileName_noExtension_substituted_stem)
         slugFromNoteTitle_substituted_stem = mySlugify(noteTitle_substituted_stem)
 
-        if  noteFileName_noExtension == mySlugify(noteTitle_substituted):
+        if  noteFileName_noExtension.lower() == mySlugify(noteTitle_substituted).lower():
             print("  FILE NAME IS OK " + mySlugify(noteTitle_substituted))
         else:
             trailingDigits_re = re.compile("([\d ]*)$")
@@ -77,21 +82,26 @@ for noteFileName in notesFileNames:
             # FOR THE TIME BEING THE FILES ARE NOT CHANGED
             #notesFileNames = getNotesFileNames(notesPath)
 
-            newFileNameInPreviousFileNames = (newFileName + ".md") in notesFileNames
-            newFileNameInNewFileNames = newFileName in newNotesFilesNames
+            newFileNameInPreviousFileNames = (newFileName + ".md").lower() in notesFileNames_lower
+            newFileNameInNewFileNames = newFileName.lower() in newNotesFilesNames
 
-            if newFileNameInPreviousFileNames or newFileNameInNewFileNames:
+
+            if sanitizeFileName(unicode(newFileName, sys.getfilesystemencoding())) != newFileName:
+                print(u"  ✗ slugified name is not safe: " + unicode(newFileName) + u" vs. " + unicode(sanitizeFileName(unicode(newFileName, sys.getfilesystemencoding()))))
+                #print(u"  ✗     vs. " + unicode(sanitizeFileName(unicode(newFileName, sys.getfilesystemencoding()))))
                 newFileName = ""
+            elif newFileNameInPreviousFileNames or newFileNameInNewFileNames:
                 if newFileNameInPreviousFileNames:
-                    print("  COLLISION ✗ EVEN WITH TRAILING DIGITS with existing file names")
+                    print("  ✗ collision with existing file names " + newFileName)
 
                 if newFileNameInNewFileNames:
-                    print("  COLLISION ✗ EVEN WITH TRAILING DIGITS with NEW file names")
+                    print("  ✗ collision with NEW file names " + newFileName)
+                newFileName = ""
             else:
                 print("    COLLISION ✓ SORTED BY ADDING TRAILING DIGITS: " + newFileName)
             
             if newFileName != "":
-                newNotesFilesNames.append(newFileName)
+                newNotesFilesNames.append(newFileName.lower())
 
             if newFileName != "":
                 noteFileName_noExtension_bearEscaped = bearEscapeDirectoryName(noteFileName_noExtension)
@@ -114,7 +124,7 @@ for noteFileName in notesFileNames:
                                 fileW.write(data_new)
                                 fileW.close()
 
-                command = 'mv ' + quotePathForShell(notesPath + "assets/" + noteFileName_noExtension) + " " + quotePathForShell(notesPath + "assets/" + newFileName)
+                command = ' [ -d '+ quotePathForShell(notesPath + "assets/" + noteFileName_noExtension) +' ] && mv ' + quotePathForShell(notesPath + "assets/" + noteFileName_noExtension) + " " + quotePathForShell(notesPath + "assets/" + newFileName)
                 print("          " + command)
                 if CHANGE_FILES_AND_DIRS:
                     call(command, shell=True)

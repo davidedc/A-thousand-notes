@@ -1,5 +1,5 @@
 from helper_routines import checkPath
-from helper_routines import sanitizeFileName
+from helper_routines import sanitizeFileNameRemoveExtension
 from helper_routines import getNotesFileNames
 
 import sys
@@ -12,7 +12,7 @@ notesFileNames = getNotesFileNames(notesPath)
 
 
 for noteFileName in notesFileNames:
-    noteFileName_Sanitized = sanitizeFileName(noteFileName)
+    noteFileName_Sanitized = sanitizeFileNameRemoveExtension(noteFileName)
     if noteFileName_Sanitized != noteFileName:
         #print(noteFileName + " -> " + noteFileName_Sanitized)
         print(noteFileName_Sanitized)

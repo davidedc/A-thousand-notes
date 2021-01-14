@@ -280,6 +280,10 @@ def wordSubstitutions(filename):
 # adapted from:
 # https://gitlab.com/jplusplus/sanitizeFileName-filename/-/blob/master/sanitizeFileName_filename/sanitizeFileName_filename.py
 
+def sanitizeFileNameRemoveExtension(filename):
+    return sanitizeFileName(filename[:-3])
+
+
 def sanitizeFileName(filename):
     """Return a fairly safe version of the filename.
 
@@ -288,6 +292,7 @@ def sanitizeFileName(filename):
     and make sure we do not exceed Windows filename length limits.
     Hence a less safe blacklist, rather than a whitelist.
     """
+
     reserved = [
         "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
         "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
@@ -296,7 +301,6 @@ def sanitizeFileName(filename):
 
     filename = "".join(c for c in filename if c != "\0")
 
-    filename = filename[:-3]
 
     # remove accents
     filename = unicode(remove_accents(filename))
