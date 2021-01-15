@@ -1,0 +1,1 @@
+for d in ./assets/*/ ; do (cd "$d" && ls -l | grep "^d"); done
