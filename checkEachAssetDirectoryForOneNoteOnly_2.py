@@ -24,7 +24,8 @@ FIX_DIRECTORIES = True
 
 for eachDirectory in attachmentsDirectoryNames:
 
-    #if eachDirectory.find("Note") == -1:
+    #if eachDirectory.lower().find("untitled note".lower()) == -1:
+    #    #print("skipping " + eachDirectory)
     #    continue
 
     originalDirectoryName = eachDirectory
