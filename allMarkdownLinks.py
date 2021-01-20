@@ -92,3 +92,12 @@ for noteFileName in notesFileNames:
 
     except Exception, e:
         print("ERROR: " + str(e) )
+
+# some incorrect that could still be helpful
+"""
+if (countOpenBrackets == countClosedBrackets) and (countOpenParens != countClosedParens):
+    for match2 in re.finditer('\[([^\n\]]*)\]\(([^\n\)]*\)[^\n\)]*)\)', data):
+
+if (countOpenBrackets != countClosedBrackets) and (countOpenParens != countClosedParens):
+    for match2 in re.finditer('\[([^\n\]]*\][^\n\]]*)\]\(([^\n\)]*\)[^\n\)]*)\)', data):
+"""
