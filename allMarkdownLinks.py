@@ -7,6 +7,9 @@ import sys
 import codecs
 import re
 
+import urllib
+import os
+
 
 notesPath = sys.argv[1]
 checkPath(notesPath)
@@ -24,7 +27,7 @@ for noteFileName in notesFileNames:
 
 
             #print (noteFileName)
-            for match in re.finditer('\[([^\n\]]*)\]\((file:[^\n\)]+)\)', data):
+            for match in re.finditer('\[([^\n\]]*)\]\(file://([^\n\)]+)\)', data):
                 countOpenBrackets = match.group(1).count('[')
                 countClosedBrackets = match.group(1).count(']')
 
@@ -34,6 +37,8 @@ for noteFileName in notesFileNames:
                 if (countOpenBrackets == countClosedBrackets) and (countOpenParens == countClosedParens):
                     print (noteFileName)
                     print ("  " + match.group(1) + " ## " + match.group(2))
+                    if not os.path.exists(urllib.unquote(match.group(2))):
+                        print ("  DIR OR ASSET DOESN'T EXIST ")
 
                 if (countOpenBrackets != countClosedBrackets):
                     print (noteFileName)
@@ -42,7 +47,7 @@ for noteFileName in notesFileNames:
                     #print (noteFileName)
                     #print ("  MISMPARENSES " + match.group(1) + " ## " + match.group(2))
 
-                    for match2 in re.finditer('\[(' + re.escape(match.group(1)) + ')\]\((file:[^\n\)]*\)[^\n\)]*)\)', data):
+                    for match2 in re.finditer('\[(' + re.escape(match.group(1)) + ')\]\(file://([^\n\)]*\)[^\n\)]*)\)', data):
 
                         countOpenBrackets2 = match2.group(1).count('[')
                         countClosedBrackets2 = match2.group(1).count(']')
@@ -55,6 +60,8 @@ for noteFileName in notesFileNames:
                             print ("  MISMPARENSES " + match2.group(1) + " ## " + match2.group(2))
                         else:
                             print ("  " + match2.group(1) + " ## " + match2.group(2))
+                            if not os.path.exists(urllib.unquote(match2.group(2))):
+                                print ("  DIR OR ASSET DOESN'T EXIST ")
 
 
             for match in re.finditer('\[([^\n\]]*)\]\((assets/[^\n\)]+)\)', data):
@@ -67,6 +74,9 @@ for noteFileName in notesFileNames:
                 if (countOpenBrackets == countClosedBrackets) and (countOpenParens == countClosedParens):
                     print (noteFileName)
                     print ("  " + match.group(1) + " ## " + match.group(2))
+                    if not os.path.exists(notesPath + urllib.unquote(match.group(2))):
+                        print ("  DIR OR ASSET DOESN'T EXIST ")
+                        print ("    " + (notesPath + urllib.unquote(match.group(2))))
 
                 if (countOpenBrackets != countClosedBrackets):
                     print (noteFileName)
@@ -88,6 +98,8 @@ for noteFileName in notesFileNames:
                             print ("  MISMPARENSES " + match2.group(1) + " ## " + match2.group(2))
                         else:
                             print ("  " + match2.group(1) + " ## " + match2.group(2))
+                            if not os.path.exists(notesPath + urllib.unquote(match2.group(2))):
+                                print ("  DIR OR ASSET DOESN'T EXIST ")
 
 
     except Exception, e:
