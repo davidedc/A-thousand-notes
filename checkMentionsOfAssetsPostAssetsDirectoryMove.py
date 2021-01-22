@@ -132,7 +132,7 @@ for eachDirectory in attachmentsDirectoryNames:
 
             assetFile_lower = assetFile.lower()
             assetFile_bearEscaped = bearEscapeDirectoryName(assetFile)
-            assetFile_bearEscaped = assetFile_bearEscaped.replace(u"?","%3F")
+            #assetFile_bearEscaped = assetFile_bearEscaped.replace(u"?","%3F")
             assetFile_bearEscaped_lower = assetFile_bearEscaped.lower()
 
 
@@ -224,7 +224,7 @@ for eachDirectory in attachmentsDirectoryNames:
                             assetFile_butWebp = assetFile[:-4] + ".webp"
                             assetFile_butWebp_lower = assetFile_butWebp.lower()
                             assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
-                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            #assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
                             assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
 
 
@@ -249,7 +249,7 @@ for eachDirectory in attachmentsDirectoryNames:
                             assetFile_butWebp = assetFile[:-4] + ".octet-stream"
                             assetFile_butWebp_lower = assetFile_butWebp.lower()
                             assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
-                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            #assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
                             assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
 
 
@@ -274,7 +274,7 @@ for eachDirectory in attachmentsDirectoryNames:
                             assetFile_butWebp = assetFile[:-5] + ".octet-stream"
                             assetFile_butWebp_lower = assetFile_butWebp.lower()
                             assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
-                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            #assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
                             assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
 
 
@@ -296,7 +296,7 @@ for eachDirectory in attachmentsDirectoryNames:
                             assetFile_butWebp = assetFile[:-5] + ".octet-stream"
                             assetFile_butWebp_lower = assetFile_butWebp.lower()
                             assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
-                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            #assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
                             assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
 
 
@@ -318,7 +318,7 @@ for eachDirectory in attachmentsDirectoryNames:
                             assetFile_butWebp = assetFile + "+xml"
                             assetFile_butWebp_lower = assetFile_butWebp.lower()
                             assetFile_butWebp_bearEscaped = bearEscapeDirectoryName(assetFile_butWebp)
-                            assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
+                            #assetFile_butWebp_bearEscaped = assetFile_butWebp_bearEscaped.replace(u"?","%3F")
                             assetFile_butWebp_bearEscaped_lower = assetFile_butWebp_bearEscaped.lower()
 
 

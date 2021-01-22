@@ -2,12 +2,12 @@
 
 from helper_routines import checkPath
 from helper_routines import getNotesFileNames
+from helper_routines import bearUnescapeDirectoryName
 
 import sys
 import codecs
 import re
 
-import urllib
 import os
 
 
@@ -37,12 +37,12 @@ for noteFileName in notesFileNames:
                 if (countOpenBrackets == countClosedBrackets) and (countOpenParens == countClosedParens):
                     print (noteFileName)
                     print ("  " + match.group(1) + " ## " + match.group(2))
-                    if not os.path.exists(urllib.unquote(match.group(2))):
-                        print ("  DIR OR ASSET DOESN'T EXIST ")
+                    if not os.path.exists(bearUnescapeDirectoryName(match.group(2))):
+                        print ("  ERROR: DIR OR ASSET DOESN'T EXIST ")
 
                 if (countOpenBrackets != countClosedBrackets):
                     print (noteFileName)
-                    print ("  MISMBRACKETS " + match.group(1) + " ## " + match.group(2))
+                    print ("  ERROR: MISMBRACKETS " + match.group(1) + " ## " + match.group(2))
                 if (countOpenParens != countClosedParens):
                     #print (noteFileName)
                     #print ("  MISMPARENSES " + match.group(1) + " ## " + match.group(2))
@@ -57,11 +57,11 @@ for noteFileName in notesFileNames:
 
                         print (noteFileName)
                         if (countOpenBrackets2 != countClosedBrackets2) or (countOpenParens2 != countClosedParens2):
-                            print ("  MISMPARENSES " + match2.group(1) + " ## " + match2.group(2))
+                            print ("  ERROR: MISMPARENSES " + match2.group(1) + " ## " + match2.group(2))
                         else:
                             print ("  " + match2.group(1) + " ## " + match2.group(2))
-                            if not os.path.exists(urllib.unquote(match2.group(2))):
-                                print ("  DIR OR ASSET DOESN'T EXIST ")
+                            if not os.path.exists(bearUnescapeDirectoryName(match2.group(2))):
+                                print ("  ERROR: DIR OR ASSET DOESN'T EXIST ")
 
 
             for match in re.finditer('\[([^\n\]]*)\]\((assets/[^\n\)]+)\)', data):
@@ -74,13 +74,13 @@ for noteFileName in notesFileNames:
                 if (countOpenBrackets == countClosedBrackets) and (countOpenParens == countClosedParens):
                     print (noteFileName)
                     print ("  " + match.group(1) + " ## " + match.group(2))
-                    if not os.path.exists(notesPath + urllib.unquote(match.group(2))):
-                        print ("  DIR OR ASSET DOESN'T EXIST ")
-                        print ("    " + (notesPath + urllib.unquote(match.group(2))))
+                    if not os.path.exists(notesPath + bearUnescapeDirectoryName(match.group(2))):
+                        print ("  ERROR: DIR OR ASSET DOESN'T EXIST ")
+                        print ("    " + (notesPath + bearUnescapeDirectoryName(match.group(2))))
 
                 if (countOpenBrackets != countClosedBrackets):
                     print (noteFileName)
-                    print ("  MISMBRACKETS " + match.group(1) + " ## " + match.group(2))
+                    print ("  ERROR: MISMBRACKETS " + match.group(1) + " ## " + match.group(2))
                 if (countOpenParens != countClosedParens):
                     #print (noteFileName)
                     #print ("  MISMPARENSES " + match.group(1) + " ## " + match.group(2))
@@ -95,11 +95,11 @@ for noteFileName in notesFileNames:
 
                         print (noteFileName)
                         if (countOpenBrackets2 != countClosedBrackets2) or (countOpenParens2 != countClosedParens2):
-                            print ("  MISMPARENSES " + match2.group(1) + " ## " + match2.group(2))
+                            print ("  ERROR: MISMPARENSES " + match2.group(1) + " ## " + match2.group(2))
                         else:
                             print ("  " + match2.group(1) + " ## " + match2.group(2))
-                            if not os.path.exists(notesPath + urllib.unquote(match2.group(2))):
-                                print ("  DIR OR ASSET DOESN'T EXIST ")
+                            if not os.path.exists(notesPath + bearUnescapeDirectoryName(match2.group(2))):
+                                print ("  ERROR: DIR OR ASSET DOESN'T EXIST ")
 
 
     except Exception, e:
