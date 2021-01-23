@@ -6,6 +6,7 @@ from helper_routines import getFileNames
 from helper_routines import getAttachmentsDirectoryNames
 from helper_routines import bearEscapeDirectoryName
 from helper_routines import quotePathForShell
+from helper_routines import printProgress
 
 import sys
 import codecs
@@ -42,11 +43,23 @@ for eachDirectory in attachmentsDirectoryNames:
         print("      WARNING: NO ASSETS (directory can be deleted?) " + originalDirectoryPath)
 """
 
+iteration = 0
+
 for eachDirectory in attachmentsDirectoryNames:
+
+    iteration = iteration + 1
 
     #if eachDirectory.lower().find("illustrated group theory".lower()) == -1:
     #    #print("skipping " + eachDirectory)
     #    continue
+
+    # -------- directory name and progress bar
+    sys.stdout.write('\033[2K\033[1G') # erase and go to beginning of line with directory name
+    print(eachDirectory)
+    printProgress(iteration, len(attachmentsDirectoryNames))
+    sys.stdout.write("\033[F") # go up to the line with the directory name
+    # anything printed from here on will just be added to the section
+    # before the directory name and the progress bar
 
     originalDirectoryPath = assetsPath + eachDirectory
 
