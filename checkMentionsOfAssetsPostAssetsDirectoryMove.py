@@ -16,20 +16,34 @@ from subprocess import call
 import re
 import string
 
+import argparse
 
-notesPath = sys.argv[1]
-assetsPath = notesPath + "assets/"
-
-checkPath(notesPath)
-checkPath(assetsPath)
 
 NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
 ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
+
+parser = argparse.ArgumentParser(description="My parser")
+parser.add_argument('--path')
+parser.add_argument('--FIX_ASSETS_REFERENCES', dest='FIX_ASSETS_REFERENCES', action='store_true')
+#parser.add_argument('--no-feature', dest='feature', action='store_false')
+parser.set_defaults(FIX_ASSETS_REFERENCES=False)
+args = parser.parse_args()
+
+notesPath = args.path
+assetsPath = notesPath + "assets/"
+
+FIX_ASSETS_REFERENCES = args.FIX_ASSETS_REFERENCES
+
+checkPath(notesPath)
+checkPath(assetsPath)
+
 notesFileNames = getNotesFileNames(notesPath)
 attachmentsDirectoryNames = getAttachmentsDirectoryNames(assetsPath)
 
-FIX_ASSETS_REFERENCES = False
+print(notesPath)
+print(FIX_ASSETS_REFERENCES)
+#quit()
 
 """
 for eachDirectory in attachmentsDirectoryNames:
