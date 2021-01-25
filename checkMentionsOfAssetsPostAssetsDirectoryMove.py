@@ -24,16 +24,13 @@ ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
 parser = argparse.ArgumentParser(description="My parser")
-parser.add_argument('--path')
-parser.add_argument('--FIX_ASSETS_REFERENCES', dest='FIX_ASSETS_REFERENCES', action='store_true')
-#parser.add_argument('--no-feature', dest='feature', action='store_false')
-parser.set_defaults(FIX_ASSETS_REFERENCES=False)
+parser.add_argument('-p','--path')
+parser.add_argument('-f', '--fix-assets-references', action='store_true')
 args = parser.parse_args()
 
 notesPath = args.path
 assetsPath = notesPath + "assets/"
 
-FIX_ASSETS_REFERENCES = args.FIX_ASSETS_REFERENCES
 
 checkPath(notesPath)
 checkPath(assetsPath)
@@ -42,7 +39,7 @@ notesFileNames = getNotesFileNames(notesPath)
 attachmentsDirectoryNames = getAttachmentsDirectoryNames(assetsPath)
 
 print(notesPath)
-print(FIX_ASSETS_REFERENCES)
+print(args.fix_assets_references)
 #quit()
 
 """
@@ -238,7 +235,7 @@ for eachDirectory in attachmentsDirectoryNames:
             if howManyFilesPointToAsset == 0:
                 print("      ERROR: counter: " + str(howManyFilesPointToAsset) + " for asset " + eachDirectory + "/" + assetFile)
 
-                if FIX_ASSETS_REFERENCES:
+                if args.fix_assets_references:
 
                     try:
                         #print(noteFilePath)
@@ -371,7 +368,7 @@ for eachDirectory in attachmentsDirectoryNames:
                     except Exception, e:
                         print("ERROR: " + str(e) )
             elif howManyFilesPointToAsset == 1:
-                if FIX_ASSETS_REFERENCES:
+                if args.fix_assets_references:
 
                     try:
                         #print(noteFilePath)
