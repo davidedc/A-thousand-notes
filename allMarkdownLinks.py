@@ -10,8 +10,14 @@ import re
 
 import os
 
+import argparse
 
-notesPath = sys.argv[1]
+
+parser = argparse.ArgumentParser(description="My parser")
+parser.add_argument('-p','--path')
+args = parser.parse_args()
+
+notesPath = args.path
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
