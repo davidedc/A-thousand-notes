@@ -19,7 +19,14 @@ import time
 from subprocess import call
 
 
-notesPath = sys.argv[1]
+import argparse
+
+
+parser = argparse.ArgumentParser(description="My parser")
+parser.add_argument('-p','--path')
+args = parser.parse_args()
+
+notesPath = args.path
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
