@@ -17,6 +17,8 @@ import string
 
 from subprocess import call
 
+import argparse
+
 def mySlugify(input):
     input = slugify(input, stopwords=['the','The','a','A','an','An'], lowercase=False)
     input = re.sub("http-www-", "", input, flags=re.IGNORECASE)
@@ -34,7 +36,11 @@ NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
 ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
-notesPath = sys.argv[1]
+parser = argparse.ArgumentParser(description="My parser")
+parser.add_argument('-p','--path')
+args = parser.parse_args()
+
+notesPath = args.path
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
