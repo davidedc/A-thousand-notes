@@ -30,14 +30,13 @@ def mySlugify(input):
     return re.sub("node-js", "nodejs", input, flags=re.IGNORECASE)
 
 
-CHANGE_FILES_AND_DIRS = True
-
 NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
 ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
 parser = argparse.ArgumentParser(description="My parser")
 parser.add_argument('-p','--path')
+parser.add_argument('-f', '--fix-name-and-assets-links', action='store_true')
 args = parser.parse_args()
 
 notesPath = args.path
@@ -124,7 +123,7 @@ for noteFileName in notesFileNames:
 
                     if data_new != data:
                         #print(data_new)
-                        if CHANGE_FILES_AND_DIRS:
+                        if args.fix_name_and_assets_links:
                             with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
                                 print(noteFilePath)
                                 fileW.write(data_new)
@@ -132,12 +131,12 @@ for noteFileName in notesFileNames:
 
                 command = ' [ -d '+ quotePathForShell(notesPath + "assets/" + noteFileName_noExtension) +' ] && mv ' + quotePathForShell(notesPath + "assets/" + noteFileName_noExtension) + " " + quotePathForShell(notesPath + "assets/" + newFileName)
                 print("          " + command)
-                if CHANGE_FILES_AND_DIRS:
+                if args.fix_name_and_assets_links:
                     call(command, shell=True)
 
                 command = 'mv ' + quotePathForShell(notesPath + noteFileName) + " " + quotePathForShell(notesPath + newFileName + ".md")
                 print("          " + command)
-                if CHANGE_FILES_AND_DIRS:
+                if args.fix_name_and_assets_links:
                     call(command, shell=True)
 
                 #raw_input("Press Enter to continue...")
