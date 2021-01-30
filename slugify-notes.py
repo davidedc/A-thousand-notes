@@ -48,7 +48,7 @@ newNotesFilesNames = []
 
 # FOR THE TIME BEING THE FILES ARE NOT CHANGED
 notesFileNames = getNotesFileNames(notesPath)
-notesFileNames_lower = (x.lower() for x in notesFileNames)
+notesFileNames_lower = [x.lower() for x in notesFileNames]
 
 for noteFileName in notesFileNames:
 
