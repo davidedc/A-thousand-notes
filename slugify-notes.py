@@ -134,6 +134,9 @@ for noteFileName in notesFileNames:
                 if args.fix_name_and_assets_links:
                     call(command, shell=True)
 
+                if len(newFileName) > len(noteFileName):
+                    print('LONGER mv ' + quotePathForShell(notesPath + noteFileName) + " " + quotePathForShell(notesPath + newFileName + ".md"))
+
                 command = 'mv ' + quotePathForShell(notesPath + noteFileName) + " " + quotePathForShell(notesPath + newFileName + ".md")
                 print("          " + command)
                 if args.fix_name_and_assets_links:
