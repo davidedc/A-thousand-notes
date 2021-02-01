@@ -6,7 +6,7 @@ from helper_routines import wordSubstitutions
 from helper_routines import bearEscapeDirectoryName
 from helper_routines import quotePathForShell
 from helper_routines import sanitizeFileName
-
+from helper_routines import changeNoteNameAssetDirNameAndAssetsLinks
 
 from slugify import slugify
 
@@ -15,7 +15,6 @@ import codecs
 import re
 import string
 
-from subprocess import call
 
 import argparse
 
@@ -128,39 +127,7 @@ for noteFileName in notesFileNames:
                 newNotesFilesNames.append(newFileName.lower())
 
             if newFileName != "":
-                noteFileName_noExtension_bearEscaped = bearEscapeDirectoryName(noteFileName_noExtension)
-                NEWnoteFileName_noExtension_bearEscaped = bearEscapeDirectoryName(newFileName)
-
-                with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
-                    data = file.read()
-                    data_lower = data.lower()
-                    file.close()
-
-
-                    data_new = data.replace("]("+ ASSETS_ABSOLUTE_PATH + noteFileName_noExtension_bearEscaped + "/", "]("+ ASSETS_ABSOLUTE_PATH + NEWnoteFileName_noExtension_bearEscaped + "/")
-                    data_new = data_new.replace("](assets/" + noteFileName_noExtension_bearEscaped + "/", "](assets/" + NEWnoteFileName_noExtension_bearEscaped + "/")
-
-                    if data_new != data:
-                        #print(data_new)
-                        if args.fix_name_and_assets_links:
-                            with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
-                                print(noteFilePath)
-                                fileW.write(data_new)
-                                fileW.close()
-
-                command = ' [ -d '+ quotePathForShell(notesPath + "assets/" + noteFileName_noExtension) +' ] && mv ' + quotePathForShell(notesPath + "assets/" + noteFileName_noExtension) + " " + quotePathForShell(notesPath + "assets/" + newFileName)
-                print("          " + command)
-                if args.fix_name_and_assets_links:
-                    call(command, shell=True)
-
-                if len(newFileName) > len(noteFileName):
-                    print('LONGER mv ' + quotePathForShell(notesPath + noteFileName) + " " + quotePathForShell(notesPath + newFileName + ".md"))
-
-                command = 'mv ' + quotePathForShell(notesPath + noteFileName) + " " + quotePathForShell(notesPath + newFileName + ".md")
-                print("          " + command)
-                if args.fix_name_and_assets_links:
-                    call(command, shell=True)
-
+                changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, ASSETS_ABSOLUTE_PATH, notesPath, noteFileName_noExtension, newFileName)
                 #raw_input("Press Enter to continue...")
 
 

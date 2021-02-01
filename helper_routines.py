@@ -10,6 +10,9 @@ import ntpath
 from os import listdir
 from os.path import isfile, join
 
+import codecs
+from subprocess import call
+
 
 def quotePathForShell(thePath):
     return '"' + thePath.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`') + '"'
@@ -386,3 +389,42 @@ def printProgress(iteration, total, prefix='', suffix='', decimals=1, bar_length
     if iteration == total:
         sys.stdout.write('\n')
     sys.stdout.flush()
+
+def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, assetsAbsolutePath, notesPath, fromName, toName):
+
+    noteFilePath = notesPath + fromName + ".md"
+
+    fromName_bearEscaped = bearEscapeDirectoryName(fromName)
+    toName_bearEscaped = bearEscapeDirectoryName(toName)
+
+
+    with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
+        data = file.read()
+        data_lower = data.lower()
+        file.close()
+
+
+        data_new = data.replace("]("+ assetsAbsolutePath + fromName_bearEscaped + "/", "]("+ assetsAbsolutePath + toName_bearEscaped + "/")
+        data_new = data_new.replace("](assets/" + fromName_bearEscaped + "/", "](assets/" + toName_bearEscaped + "/")
+
+        if data_new != data:
+            #print(data_new)
+            if actuallyChange:
+                with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                    print(noteFilePath)
+                    fileW.write(data_new)
+                    fileW.close()
+
+    command = ' [ -d '+ quotePathForShell(notesPath + "assets/" + fromName) +' ] && mv ' + quotePathForShell(notesPath + "assets/" + fromName) + " " + quotePathForShell(notesPath + "assets/" + toName)
+    print("          " + command)
+    if actuallyChange:
+        call(command, shell=True)
+
+    if len(toName) > len(fromName):
+        print('LONGER mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md"))
+
+    command = 'mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md")
+    print("          " + command)
+    if actuallyChange:
+        call(command, shell=True)
+
