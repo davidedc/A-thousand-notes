@@ -13,6 +13,7 @@ from os.path import isfile, join
 import codecs
 from subprocess import call
 
+import locale
 
 def quotePathForShell(thePath):
     return '"' + thePath.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`') + '"'
@@ -23,17 +24,32 @@ def stripEmptyTailLines(lines):
 
 def getNotesFileNames(notesPath):
     fse = sys.getfilesystemencoding()
-    return [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
+    theList = [unicode(ntpath.basename(x), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*.md")]
+
+    # this is just to give AN order to the list (instead of undefined or random)
+    # note that "note-2.md" comes before "note.md"
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8') # vary depending on your lang/locale
+    return sorted(theList,cmp=locale.strcoll)
+
 
 def getFileNames(path):
     #fse = sys.getfilesystemencoding()
     #return [ntpath.basename(x) for x in glob.glob(os.path.normpath(path) + "/*")]
-    return [f for f in listdir(path) if isfile(join(path, f))]
+    theList =  [f for f in listdir(path) if isfile(join(path, f))]
 
+    # this is just to give AN order to the list (instead of undefined or random)
+    # note that "note-2.md" comes before "note.md"
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8') # vary depending on your lang/locale
+    return sorted(theList,cmp=locale.strcoll)
 
 def getAttachmentsDirectoryNames(notesPath):
     fse = sys.getfilesystemencoding()
-    return [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*/")]
+    theList = [unicode(ntpath.basename(os.path.normpath(x)), fse) for x in glob.glob(os.path.normpath(notesPath) + "/*/")]
+
+    # this is just to give AN order to the list (instead of undefined or random)
+    # note that "note-2.md" comes before "note.md"
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8') # vary depending on your lang/locale
+    return sorted(theList,cmp=locale.strcoll)
 
 def checkPath(notesPath):
     if not os.path.exists(notesPath):

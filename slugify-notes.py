@@ -42,12 +42,17 @@ notesPath = args.path
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
+# this is so that "note.md" comes before "note-2.md"
+# so we examine the files (and the namings) always in the
+# same logical order, starting with the files that heave the
+# least "collision trailing number" in the filename
+notesFileNames = sorted(notesFileNames, key=len)
+notesFileNames_lower = [x.lower() for x in notesFileNames]
+
 newNotesFilesNames = []
 
-
-# FOR THE TIME BEING THE FILES ARE NOT CHANGED
-notesFileNames = getNotesFileNames(notesPath)
-notesFileNames_lower = [x.lower() for x in notesFileNames]
+for noteFileName in notesFileNames:
+    print(noteFileName)
 
 for noteFileName in notesFileNames:
 
