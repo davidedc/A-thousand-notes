@@ -26,11 +26,12 @@ ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
 parser = argparse.ArgumentParser(description="My parser")
-parser.add_argument('-p','--path')
+parser.add_argument('path')
 parser.add_argument('-f', '--fix-name-and-assets-links', action='store_true')
 
 parser.add_argument('-o', '--old-name')
 parser.add_argument('-n', '--new-name')
+parser.add_argument('-v', '--verbose')
 
 args = parser.parse_args()
 
@@ -41,6 +42,6 @@ notesFileNames = getNotesFileNames(notesPath)
 newNotesFilesNames = []
 
 
-changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, ASSETS_ABSOLUTE_PATH, notesPath, args.old_name, args.new_name)
+changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, ASSETS_ABSOLUTE_PATH, notesPath, args.old_name, args.new_name)
 #raw_input("Press Enter to continue...")
 

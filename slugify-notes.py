@@ -17,6 +17,7 @@ import string
 
 
 import argparse
+from argparse import RawTextHelpFormatter
 
 def mySlugify(input):
     input = slugify(input, stopwords=['the','The','a','A','an','An'], lowercase=False)
@@ -33,9 +34,10 @@ NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
 ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
-parser = argparse.ArgumentParser(description="My parser")
-parser.add_argument('-p','--path')
-parser.add_argument('-f', '--fix-name-and-assets-links', action='store_true')
+parser = argparse.ArgumentParser(description="slugifies note file names starting from the note title.\n\nExamples:\npython slugify-notes.py ../../../Public/10000notes/\npython slugify-notes.py -f ../../../Public/10000notes/", formatter_class=RawTextHelpFormatter)
+parser.add_argument('path')
+parser.add_argument('-f', '--fix-name-and-assets-links', help="fix the name, the assets directory and the asset links", action='store_true')
+parser.add_argument('-v', '--verbose', action='store_true')
 args = parser.parse_args()
 
 notesPath = args.path
@@ -51,8 +53,9 @@ notesFileNames_lower = [x.lower() for x in notesFileNames]
 
 newNotesFilesNames = []
 
-for noteFileName in notesFileNames:
-    print(noteFileName)
+if args.verbose:
+    for noteFileName in notesFileNames:
+        print(noteFileName)
 
 for noteFileName in notesFileNames:
 
@@ -64,8 +67,6 @@ for noteFileName in notesFileNames:
         with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
             lines = file.read().splitlines()
             file.close()
-
-        print(noteFileName_noExtension)
 
         noteTitle = lines[1][2:]
 
@@ -80,7 +81,8 @@ for noteFileName in notesFileNames:
         slugFromNoteTitle_substituted_stem = mySlugify(noteTitle_substituted_stem)
 
         if  noteFileName_noExtension.lower() == mySlugify(noteTitle_substituted).lower():
-            print("  FILE NAME IS OK " + mySlugify(noteTitle_substituted))
+            if args.verbose:
+                print(noteFileName_noExtension + " ...FILE NAME IS OK " + mySlugify(noteTitle_substituted))
         else:
 
             noteTitle_substituted_slugified = mySlugify(noteTitle_substituted)
@@ -102,7 +104,8 @@ for noteFileName in notesFileNames:
 
 
             if (not noteTitle_substituted_slugified_InPreviousFileNames) and (not noteTitle_substituted_slugified_InNewFileNames):
-                print("    PLAIN CONVERSION FROM TITLE IS OK: " + noteTitle_substituted_slugified)
+                if args.verbose:
+                    print(noteFileName_noExtension + " ...PLAIN CONVERSION FROM TITLE IS OK: " + noteTitle_substituted_slugified)
                 newFileName = noteTitle_substituted_slugified
                 #if noteTitle_substituted_slugified == "photo-2":
                 #    for ffff in notesFileNames_lower:
@@ -113,37 +116,41 @@ for noteFileName in notesFileNames:
                 newFileName = ""
             elif noteTitle_substituted_slugified_withTrailingDigits_InPreviousFileNames or noteTitle_substituted_slugified_withTrailingDigits_InNewFileNames:
                 if noteFileName_noExtension.lower() == noteTitle_substituted_slugified_withTrailingDigits.lower():
-                    print("    FILE NAME IS OK: " + newFileName)
+                    if args.verbose:
+                        print(noteFileName_noExtension + " ...FILE NAME IS OK: " + newFileName)
                 else:
                     if noteTitle_substituted_slugified_withTrailingDigits_InPreviousFileNames:
-                        print("  ✗ collision with existing file names " + newFileName)
+                        print(noteFileName_noExtension + " ... ✗ collision with existing file names " + newFileName)
 
                 if noteTitle_substituted_slugified_withTrailingDigits_InNewFileNames:
-                    print("  ✗ collision with NEW file names " + newFileName)
+                    print(noteFileName_noExtension + " ... ✗ collision with NEW file names " + newFileName)
                 newFileName = ""
             else:
                 if  noteFileName_noExtension.lower() == newFileName.lower():
-                    print("    COLLISION ✓ GOES AWAY WITH TRAILING DIGITS: " + newFileName)
+                    if args.verbose:
+                        print(noteFileName_noExtension + " ...COLLISION ✓ GOES AWAY WITH TRAILING DIGITS: " + newFileName)
                     newFileName = ""
                 else:
-                    print("    COLLISION ✓ CAN BE SORTED BY ADDING TRAILING DIGITS: " + newFileName)
+                    if args.verbose:
+                        print(noteFileName_noExtension + " ...COLLISION ✓ CAN BE SORTED BY ADDING TRAILING DIGITS: " + newFileName)
             
             if newFileName != "":
                 newNotesFilesNames.append(newFileName.lower())
 
             if newFileName != "":
-                changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, ASSETS_ABSOLUTE_PATH, notesPath, noteFileName_noExtension, newFileName)
+                changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, ASSETS_ABSOLUTE_PATH, notesPath, noteFileName_noExtension, newFileName)
                 #raw_input("Press Enter to continue...")
 
 
 
 
-        if slugFromNoteFileName_noExtension_substituted_stem == slugFromNoteTitle_substituted_stem:
-            print("  " + mySlugify(noteFileName_noExtension_substituted))
-        else:
-            print("  ### " + noteFileName_noExtension)
-            print("  ###   " + mySlugify(noteFileName_noExtension_substituted))
-            print("  ###   " + mySlugify(noteTitle_substituted_slugified))
+        if args.verbose:
+            if slugFromNoteFileName_noExtension_substituted_stem == slugFromNoteTitle_substituted_stem:
+                print("  " + mySlugify(noteFileName_noExtension_substituted))
+            else:
+                print("  ### " + noteFileName_noExtension)
+                print("  ###   " + mySlugify(noteFileName_noExtension_substituted))
+                print("  ###   " + mySlugify(noteTitle_substituted_slugified))
 
     except Exception, e:
         print("ERROR: " + str(e) )

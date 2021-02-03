@@ -24,7 +24,7 @@ ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
 parser = argparse.ArgumentParser(description="My parser")
-parser.add_argument('-p','--path')
+parser.add_argument('path')
 parser.add_argument('-f', '--fix-assets-references', action='store_true')
 args = parser.parse_args()
 

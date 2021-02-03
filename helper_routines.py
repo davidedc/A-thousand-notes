@@ -406,7 +406,7 @@ def printProgress(iteration, total, prefix='', suffix='', decimals=1, bar_length
         sys.stdout.write('\n')
     sys.stdout.flush()
 
-def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, assetsAbsolutePath, notesPath, fromName, toName):
+def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, assetsAbsolutePath, notesPath, fromName, toName):
 
     noteFilePath = notesPath + fromName + ".md"
 
@@ -431,8 +431,11 @@ def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, assetsAbsolutePath,
                     fileW.write(data_new)
                     fileW.close()
 
+    print(fromName + " needs name changed to " + toName)
+
     command = ' [ -d '+ quotePathForShell(notesPath + "assets/" + fromName) +' ] && mv ' + quotePathForShell(notesPath + "assets/" + fromName) + " " + quotePathForShell(notesPath + "assets/" + toName)
-    print("          " + command)
+    if verbose:
+        print("          " + command)
     if actuallyChange:
         call(command, shell=True)
 
@@ -440,7 +443,8 @@ def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, assetsAbsolutePath,
         print('LONGER mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md"))
 
     command = 'mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md")
-    print("          " + command)
+    if verbose:
+        print("          " + command)
     if actuallyChange:
         call(command, shell=True)
 
