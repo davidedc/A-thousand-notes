@@ -1,0 +1,4 @@
+# some notes come to have a ridiculously long file name because the title
+# is probably malformed. This listing shows those files.
+# you can tail this to avoid being overwhelmed
+ls | perl -e 'print sort { length($a) <=> length($b) } <>'
