@@ -19,6 +19,8 @@ import string
 import argparse
 from argparse import RawTextHelpFormatter
 
+import os
+
 def mySlugify(input):
     input = slugify(input, stopwords=['the','The','a','A','an','An'], lowercase=False)
     input = re.sub("http-www-", "", input, flags=re.IGNORECASE)
@@ -40,7 +42,7 @@ parser.add_argument('-f', '--fix-name-and-assets-links', help="fix the name, the
 parser.add_argument('-v', '--verbose', action='store_true')
 args = parser.parse_args()
 
-notesPath = args.path
+notesPath = os.path.join(args.path, '') # add trailing slash if it's not there
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
