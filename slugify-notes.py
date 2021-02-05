@@ -32,8 +32,6 @@ def mySlugify(input):
     return re.sub("node-js", "nodejs", input, flags=re.IGNORECASE)
 
 
-NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
-ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
 parser = argparse.ArgumentParser(description="slugifies note file names starting from the note title.\n\nExamples:\npython slugify-notes.py ../../../Public/10000notes/\npython slugify-notes.py -f ../../../Public/10000notes/", formatter_class=RawTextHelpFormatter)
@@ -43,6 +41,10 @@ parser.add_argument('-v', '--verbose', action='store_true')
 args = parser.parse_args()
 
 notesPath = os.path.join(args.path, '') # add trailing slash if it's not there
+
+NOTES_ABSOLUTE_PATH = "file://" + os.path.abspath(notesPath) + "/"
+ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
+
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
