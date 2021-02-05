@@ -37,7 +37,7 @@ ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
 parser = argparse.ArgumentParser(description="slugifies note file names starting from the note title.\n\nExamples:\npython slugify-notes.py ../../../Public/10000notes/\npython slugify-notes.py -f ../../../Public/10000notes/", formatter_class=RawTextHelpFormatter)
-parser.add_argument('path')
+parser.add_argument('path', help="notes' path")
 parser.add_argument('-f', '--fix-name-and-assets-links', help="fix the name, the assets directory and the asset links", action='store_true')
 parser.add_argument('-v', '--verbose', action='store_true')
 args = parser.parse_args()
