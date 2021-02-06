@@ -1,0 +1,16 @@
+Ways to download sites to markdown, with images
+
+pandoc -f html https://www.theverge.com/2020/12/28/22203910/lg-qned-mini-led-4k-8k-lcd-tv-announced-ces-2021 --extract-media ./myMediaFolder8  -t markdown_strict  -o example19.md
+
+
+readable https://www.theverge.com/2020/12/28/22203910/lg-qned-mini-led-4k-8k-lcd-tv-announced-ces-2021 | sed "s/<figure>//g" | sed "s/<\/figure>//g" | sed "s/<picture/<span/g"  | sed "s/picture>/span>/g" | pandoc -f html  --extract-media ./myMediaFolder10  -t markdown | sed "s/{sizes=\"[^}]*//" | sed "s/srcset=\".*}//" | sed "s/<div>//" | sed "s/<\/div>//" | sed "s/:::.*//" > example21.md
+
+
+Twitter urls not really working
+https://twitter.com/Powersaurus/status/1341152739888422915
+
+
+readable https://www.youtube.com/watch?v=QK00XTAtvKE&feature=share | sed "s/<figure>//g" | sed "s/<\/figure>//g" | sed "s/<picture/<span/g"  | sed "s/picture>/span>/g" | pandoc -f html  --extract-media ./myMediaFolder10  -t markdown | sed "s/{sizes=\"[^}]*//" | sed "s/srcset=\".*}//" | sed "s/<div>//" | sed "s/<\/div>//" | sed "s/:::.*//" > example21.md
+
+
+pandoc -f html https://www.youtube.com/watch?v=QK00XTAtvKE --extract-media ./myMediaFolder8  -t markdown_strict  -o example19.md
