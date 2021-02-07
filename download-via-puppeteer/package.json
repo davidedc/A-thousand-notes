@@ -1,0 +1,15 @@
+{
+  "name": "download-via-puppeteer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "puppeteer": "^0.13.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "node download-via-puppeteer.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
