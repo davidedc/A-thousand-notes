@@ -1,0 +1,15 @@
+{
+  "name": "note-from-opengraph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "open-graph-scraper": "^4.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "node note-from-opengraph.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
