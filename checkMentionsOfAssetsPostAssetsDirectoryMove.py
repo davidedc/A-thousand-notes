@@ -17,6 +17,7 @@ import re
 import string
 
 import argparse
+import os
 
 
 NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
@@ -28,7 +29,7 @@ parser.add_argument('path')
 parser.add_argument('-f', '--fix-assets-references', action='store_true')
 args = parser.parse_args()
 
-notesPath = args.path
+notesPath = os.path.join(args.path, '') # add trailing slash if it's not there
 assetsPath = notesPath + "assets/"
 
 

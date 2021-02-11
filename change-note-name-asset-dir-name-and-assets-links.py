@@ -19,6 +19,7 @@ import string
 from subprocess import call
 
 import argparse
+import os
 
 
 NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
@@ -35,7 +36,7 @@ parser.add_argument('-v', '--verbose')
 
 args = parser.parse_args()
 
-notesPath = args.path
+notesPath = os.path.join(args.path, '') # add trailing slash if it's not there
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)

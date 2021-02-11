@@ -19,7 +19,7 @@ import time
 
 
 parser = argparse.ArgumentParser(description="My parser")
-parser.add_argument('-p','--path')
+parser.add_argument('path')
 args = parser.parse_args()
 
 noteFileName = args.path

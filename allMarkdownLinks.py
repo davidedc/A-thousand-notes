@@ -14,10 +14,10 @@ import argparse
 
 
 parser = argparse.ArgumentParser(description="My parser")
-parser.add_argument('-p','--path')
+parser.add_argument('path')
 args = parser.parse_args()
 
-notesPath = args.path
+notesPath = os.path.join(args.path, '') # add trailing slash if it's not there
 checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
