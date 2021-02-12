@@ -31,6 +31,17 @@ notesFileNames = getNotesFileNames(notesPath)
 
 for noteFileName in notesFileNames:
     noteFilePath = notesPath + noteFileName
+
+    #    _____________________________________
+    #  / TODO this code should be factored-out \
+    #  \ into the helper-routines file         /
+    #    -------------------------------------
+    #           \   ^__^ 
+    #            \  (oo)\_______
+    #               (__)\       )\/\
+    #                   ||----w |
+    #                   ||     ||
+
     try:
         #print(noteFilePath)
         needsTagLine = False
@@ -50,9 +61,9 @@ for noteFileName in notesFileNames:
               needsTagLine = True
 
             #print(noteFilePath + " > " + tag_line)
-            theCreationDate = int(round(time.time()))
-            theModificationDate = theCreationDate
-            theAccessDate = theCreationDate
+            theCreationDate = math.floor(creation_date(noteFilePath))
+            theModificationDate = math.floor(modification_date(noteFilePath))
+            theAccessDate = math.floor(access_date(noteFilePath))
 
             last_line = lines[-1]
             if last_line.find("created: ") == -1:
@@ -62,7 +73,7 @@ for noteFileName in notesFileNames:
                 needsFooter = True
 
 
-            if args.fix_note:
+            if args.fix_note and (needsTagLine or needsFooter):
                 with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
                     fileW.write("\n".join(lines))
                     fileW.close()
