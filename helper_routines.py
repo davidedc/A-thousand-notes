@@ -13,6 +13,7 @@ from os.path import isfile, join
 import codecs
 from subprocess import call
 
+import platform
 import locale
 
 def quotePathForShell(thePath):
