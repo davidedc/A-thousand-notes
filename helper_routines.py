@@ -16,6 +16,9 @@ from subprocess import call
 import platform
 import locale
 
+import math
+from datetime import datetime
+
 def quotePathForShell(thePath):
     return '"' + thePath.replace('"', '\\"').replace('$', '\\$').replace('`', '\\`') + '"'
 
@@ -449,3 +452,55 @@ def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, assetsAbso
     if actuallyChange:
         call(command, shell=True)
 
+
+def wrapNoteInTagLineAndFooter(actuallyChange, noteFilePath):
+    try:
+        needsTagLine = False
+        needsFooter = False
+        with codecs.open(noteFilePath, 'r', encoding='utf-8') as file:
+
+            lines = file.read().splitlines()
+            file.close()
+
+            stripEmptyTailLines(lines)
+
+            tag_line = lines[0]
+
+            if tag_line.find("tags:") == -1:
+              needsTagLine = True
+              lines.insert(0, "tags: ")
+
+            #print(noteFilePath + " > " + tag_line)
+            theCreationDate = math.floor(creation_date(noteFilePath))
+            theModificationDate = math.floor(modification_date(noteFilePath))
+            theAccessDate = math.floor(access_date(noteFilePath))
+
+            last_line = lines[-1]
+            if last_line.find("created: ") == -1:
+                needsFooter = True
+                theCreationDate = math.floor(creation_date(noteFilePath))
+                theModificationDate = math.floor(modification_date(noteFilePath))
+                theAccessDate = math.floor(access_date(noteFilePath))
+
+                lines.append("")
+                lines.append("___")
+                lines.append("created: "  + str(datetime.utcfromtimestamp(theCreationDate)) + " modified: " + str(datetime.utcfromtimestamp(theModificationDate)))
+
+
+            if actuallyChange:
+                if needsTagLine or needsFooter:
+                    with codecs.open(noteFilePath, 'w', encoding='utf-8') as fileW:
+                        fileW.write("\n".join(lines))
+                        fileW.close()
+                        os.utime(noteFilePath,(theAccessDate, theModificationDate))
+            else:
+                if needsTagLine or needsFooter:
+                    print(noteFilePath)
+
+            if needsTagLine or needsFooter:
+                return True
+            else:
+                return False
+
+    except Exception, e:
+        print("ERROR: " + str(e) )
