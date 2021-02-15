@@ -6,12 +6,13 @@ from helper_routines import getNotesFileNames
 import sys
 import codecs
 import re
-
-NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
-
+import os
 
 notesPath = sys.argv[1]
 checkPath(notesPath)
+
+NOTES_ABSOLUTE_PATH = "file://" + os.path.abspath(notesPath) + "/"
+ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 notesFileNames = getNotesFileNames(notesPath)
 

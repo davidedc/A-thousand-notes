@@ -41,11 +41,10 @@ parser.add_argument('-v', '--verbose', action='store_true')
 args = parser.parse_args()
 
 notesPath = os.path.join(args.path, '') # add trailing slash if it's not there
+checkPath(notesPath)
 
 NOTES_ABSOLUTE_PATH = "file://" + os.path.abspath(notesPath) + "/"
 ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
-
-checkPath(notesPath)
 
 notesFileNames = getNotesFileNames(notesPath)
 # this is so that "note.md" comes before "note-2.md"
@@ -142,7 +141,7 @@ for noteFileName in notesFileNames:
                 newNotesFilesNames.append(newFileName.lower())
 
             if newFileName != "":
-                changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, ASSETS_ABSOLUTE_PATH, notesPath, noteFileName_noExtension, newFileName)
+                changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, notesPath, noteFileName_noExtension, newFileName)
                 #raw_input("Press Enter to continue...")
 
 

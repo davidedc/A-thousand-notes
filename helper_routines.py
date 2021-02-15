@@ -410,9 +410,11 @@ def printProgress(iteration, total, prefix='', suffix='', decimals=1, bar_length
         sys.stdout.write('\n')
     sys.stdout.flush()
 
-def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, assetsAbsolutePath, notesPath, fromName, toName):
+def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, notesPath, fromName, toName):
 
     noteFilePath = notesPath + fromName + ".md"
+
+    assetsAbsolutePath = "file://" + os.path.abspath(notesPath) + "/" + "assets/"
 
     fromName_bearEscaped = bearEscapeDirectoryName(fromName)
     toName_bearEscaped = bearEscapeDirectoryName(toName)

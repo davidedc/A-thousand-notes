@@ -22,8 +22,6 @@ import argparse
 import os
 
 
-NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
-ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 
 parser = argparse.ArgumentParser(description="My parser")
@@ -39,10 +37,13 @@ args = parser.parse_args()
 notesPath = os.path.join(args.path, '') # add trailing slash if it's not there
 checkPath(notesPath)
 
+NOTES_ABSOLUTE_PATH = "file://" + os.path.abspath(notesPath) + "/"
+ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
+
 notesFileNames = getNotesFileNames(notesPath)
 newNotesFilesNames = []
 
 
-changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, ASSETS_ABSOLUTE_PATH, notesPath, args.old_name, args.new_name)
+changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, notesPath, args.old_name, args.new_name)
 #raw_input("Press Enter to continue...")
 

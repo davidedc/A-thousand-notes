@@ -20,10 +20,6 @@ import argparse
 import os
 
 
-NOTES_ABSOLUTE_PATH = "file:///Users/davidedellacasa/Public/10000notes/"
-ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
-
-
 parser = argparse.ArgumentParser(description="My parser")
 parser.add_argument('path')
 parser.add_argument('-f', '--fix-assets-references', action='store_true')
@@ -35,6 +31,9 @@ assetsPath = notesPath + "assets/"
 
 checkPath(notesPath)
 checkPath(assetsPath)
+
+NOTES_ABSOLUTE_PATH = "file://" + os.path.abspath(notesPath) + "/"
+ASSETS_ABSOLUTE_PATH = NOTES_ABSOLUTE_PATH + "assets/"
 
 notesFileNames = getNotesFileNames(notesPath)
 attachmentsDirectoryNames = getAttachmentsDirectoryNames(assetsPath)
