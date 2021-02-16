@@ -410,11 +410,12 @@ def printProgress(iteration, total, prefix='', suffix='', decimals=1, bar_length
         sys.stdout.write('\n')
     sys.stdout.flush()
 
-def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, notesPath, fromName, toName):
+def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, notesPath, fromName, toName, destinationPath):
 
     noteFilePath = notesPath + fromName + ".md"
 
     assetsAbsolutePath = "file://" + os.path.abspath(notesPath) + "/" + "assets/"
+    absoluteDestinationPath = "file://" + os.path.abspath(destinationPath) + "/" + "assets/"
 
     fromName_bearEscaped = bearEscapeDirectoryName(fromName)
     toName_bearEscaped = bearEscapeDirectoryName(toName)
@@ -426,7 +427,7 @@ def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, notesPath,
         file.close()
 
 
-        data_new = data.replace("]("+ assetsAbsolutePath + fromName_bearEscaped + "/", "]("+ assetsAbsolutePath + toName_bearEscaped + "/")
+        data_new = data.replace("]("+ assetsAbsolutePath + fromName_bearEscaped + "/", "]("+ absoluteDestinationPath + toName_bearEscaped + "/")
         data_new = data_new.replace("](assets/" + fromName_bearEscaped + "/", "](assets/" + toName_bearEscaped + "/")
 
         if data_new != data:

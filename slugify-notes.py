@@ -141,7 +141,7 @@ for noteFileName in notesFileNames:
                 newNotesFilesNames.append(newFileName.lower())
 
             if newFileName != "":
-                changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, notesPath, noteFileName_noExtension, newFileName)
+                changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, notesPath, noteFileName_noExtension, newFileName, notesPath)
                 #raw_input("Press Enter to continue...")
 
 

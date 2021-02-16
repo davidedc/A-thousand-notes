@@ -44,6 +44,6 @@ notesFileNames = getNotesFileNames(notesPath)
 newNotesFilesNames = []
 
 
-changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, notesPath, args.old_name, args.new_name)
+changeNoteNameAssetDirNameAndAssetsLinks(args.fix_name_and_assets_links, args.verbose, notesPath, args.old_name, args.new_name, notesPath)
 #raw_input("Press Enter to continue...")
 
