@@ -438,22 +438,23 @@ def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, notesPath,
                     fileW.write(data_new)
                     fileW.close()
 
-    print(fromName + " needs name changed to " + toName)
+    if fromName != toName:
+        print(fromName + " needs name changed to " + toName)
 
-    command = ' [ -d '+ quotePathForShell(notesPath + "assets/" + fromName) +' ] && mv ' + quotePathForShell(notesPath + "assets/" + fromName) + " " + quotePathForShell(notesPath + "assets/" + toName)
-    if verbose:
-        print("          " + command)
-    if actuallyChange:
-        call(command, shell=True)
+        command = ' [ -d '+ quotePathForShell(notesPath + "assets/" + fromName) +' ] && mv ' + quotePathForShell(notesPath + "assets/" + fromName) + " " + quotePathForShell(notesPath + "assets/" + toName)
+        if verbose:
+            print("          " + command)
+        if actuallyChange:
+            call(command, shell=True)
 
-    if len(toName) > len(fromName):
-        print('LONGER mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md"))
+        if len(toName) > len(fromName):
+            print('LONGER mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md"))
 
-    command = 'mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md")
-    if verbose:
-        print("          " + command)
-    if actuallyChange:
-        call(command, shell=True)
+        command = 'mv ' + quotePathForShell(notesPath + fromName + ".md") + " " + quotePathForShell(notesPath + toName + ".md")
+        if verbose:
+            print("          " + command)
+        if actuallyChange:
+            call(command, shell=True)
 
 
 def wrapNoteInTagLineAndFooter(actuallyChange, noteFilePath):
