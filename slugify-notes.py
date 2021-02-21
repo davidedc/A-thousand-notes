@@ -7,8 +7,7 @@ from helper_routines import bearEscapeDirectoryName
 from helper_routines import quotePathForShell
 from helper_routines import sanitizeFileName
 from helper_routines import changeNoteNameAssetDirNameAndAssetsLinks
-
-from slugify import slugify
+from helper_routines import mySlugify
 
 import sys
 import codecs
@@ -20,18 +19,6 @@ import argparse
 from argparse import RawTextHelpFormatter
 
 import os
-
-def mySlugify(input):
-    input = slugify(input, stopwords=['the','The','a','A','an','An'], lowercase=False)
-    input = re.sub("http-www-", "", input, flags=re.IGNORECASE)
-    input = re.sub("https-www-", "", input, flags=re.IGNORECASE)
-    input = re.sub("www-", "", input, flags=re.IGNORECASE)
-    input = re.sub("(-and)+", "-and", input, flags=re.IGNORECASE)
-    input = re.sub('sci-fi', 'scifi', input, flags=re.IGNORECASE)
-    input = re.sub('t-shirt', 'tshirt', input, flags=re.IGNORECASE)
-    return re.sub("node-js", "nodejs", input, flags=re.IGNORECASE)
-
-
 
 
 parser = argparse.ArgumentParser(description="slugifies note file names starting from the note title.\n\nExamples:\npython slugify-notes.py ../../../Public/10000notes/\npython slugify-notes.py -f ../../../Public/10000notes/", formatter_class=RawTextHelpFormatter)
