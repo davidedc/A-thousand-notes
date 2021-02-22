@@ -35,19 +35,30 @@ checkPath(notesPath)
 notesFileNames = getNotesFileNames(notesPath)
 notesFileNames_lower = [x.lower() for x in notesFileNames]
 
-fse = sys.getfilesystemencoding()
 
-noteName = unicode(ntpath.basename(args.path), fse)
+with codecs.open(args.path, 'r', encoding='utf-8') as file:
+    lines = file.read().splitlines()
+    file.close()
+
+if lines[0].startswith('#'):
+    noteName = lines[0][2:]
+elif lines[1].startswith('#'):
+    noteName = lines[1][2:]
+else:
+    exit("can't find title in the note")
+
+#fse = sys.getfilesystemencoding()
+#noteName = unicode(ntpath.basename(args.path), fse)
 #noteName = "untitled.md"
 
-slugifiedFileNameWithoutExtension = mySlugify(noteName[:-3])
+slugifiedFileNameWithoutExtension = mySlugify(noteName)
 slugFromNoteFileName = slugifiedFileNameWithoutExtension + ".md"
 
 #print(notesFileNames_lower)
 #print(slugFromNoteFileName)
 
 if slugFromNoteFileName.lower() not in notesFileNames_lower:
-    print("good!")
+    print("existing name is good!: " + slugFromNoteFileName)
 else:
     tryAddingThisNumberToEnd = 2
     while (slugifiedFileNameWithoutExtension + "-"+ str(tryAddingThisNumberToEnd) + ".md").lower() in notesFileNames_lower:
