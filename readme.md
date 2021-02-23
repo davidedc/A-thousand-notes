@@ -1,6 +1,6 @@
 ### Background
 
-In Q4 2020 Evernote released version 10 of their client. To my dismay, this version wasn't sufficiently performant with as many notes as I had (Evernote probably decided to target a faster-growing segment). Also the client came with limitations on how many notes one could export at one time.
+In Q4 2020 Evernote released version 10 of their client. To my dismay, this version wasn't sufficiently performant with as many notes as I had (Evernote probably decided to target a faster-growing segment of users with fewer notes). Also the client came with limitations on how many notes one could export at one time.
 
 Luckily, Evernote still supported a legacy client, from which I could bulk-export all 28k notes. Using Bear on OSX, I could then import the Evernote export, and export all the notes in markdown.
 

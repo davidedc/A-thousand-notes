@@ -58,10 +58,10 @@ slugFromNoteFileName = slugifiedFileNameWithoutExtension + ".md"
 #print(slugFromNoteFileName)
 
 if slugFromNoteFileName.lower() not in notesFileNames_lower:
-    print("existing name is good!: " + slugFromNoteFileName)
+    print(slugifiedFileNameWithoutExtension)
 else:
     tryAddingThisNumberToEnd = 2
     while (slugifiedFileNameWithoutExtension + "-"+ str(tryAddingThisNumberToEnd) + ".md").lower() in notesFileNames_lower:
         tryAddingThisNumberToEnd = tryAddingThisNumberToEnd + 1
-    print("new name: " + (slugifiedFileNameWithoutExtension + "-"+ str(tryAddingThisNumberToEnd) + ".md") )
+    print(slugifiedFileNameWithoutExtension + "-"+ str(tryAddingThisNumberToEnd))
 
