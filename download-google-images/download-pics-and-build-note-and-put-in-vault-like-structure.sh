@@ -10,3 +10,7 @@ python create-note-around-images.py "./simple_images/$1"
 mv "$1.md" ./downloads/
 rm -r "./downloads/assets/$1"
 mv "./simple_images/$1" ./downloads/assets/
+newName=$(python ../find-suitable-unused-slugified-name.py "downloads/$1.md" -v ../../../Davide/notes-vault/)
+echo $newName
+python ../change-note-name-asset-dir-name-and-assets-links.py downloads -f -o "$1" -n $newName
+python ../wrap-in-tag-line-and-footer.py "./downloads/$newName.md"
