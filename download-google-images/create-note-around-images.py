@@ -38,6 +38,6 @@ for eachImageFile in imageFiles:
         continue
     noteContents = noteContents + "\n\n![](assets/" + bearEscapeDirectoryName(imagesDirectoryName) + "/" + bearEscapeDirectoryName(eachImageFile) +")"
 
-    with codecs.open(imagesDirectoryName + ".md", 'w', encoding='utf-8') as fileW:
-        fileW.write(noteContents)
-        fileW.close()
+with codecs.open(imagesDirectoryName + ".md", 'w', encoding='utf-8') as fileW:
+    fileW.write(noteContents)
+    fileW.close()
