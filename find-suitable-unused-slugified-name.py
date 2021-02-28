@@ -8,7 +8,6 @@ from helper_routines import wordSubstitutions
 from helper_routines import bearEscapeDirectoryName
 from helper_routines import quotePathForShell
 from helper_routines import sanitizeFileName
-from helper_routines import changeNoteNameAssetDirNameAndAssetsLinks
 from helper_routines import mySlugify
 
 import sys
