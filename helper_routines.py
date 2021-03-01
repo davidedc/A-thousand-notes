@@ -410,12 +410,17 @@ def printProgress(iteration, total, prefix='', suffix='', decimals=1, bar_length
         sys.stdout.write('\n')
     sys.stdout.flush()
 
+# note that this does rename the note and asset dir, BUT does NOT move the note to a new path
+# (when wanted, the moving to another path is done externally, in a shell script)
 def changeNoteNameAssetDirNameAndAssetsLinks(actuallyChange, verbose, notesPath, fromName, toName, destinationPath):
 
     noteFilePath = notesPath + fromName + ".md"
 
     assetsAbsolutePath = "file://" + os.path.abspath(notesPath) + "/" + "assets/"
     absoluteDestinationPath = "file://" + os.path.abspath(destinationPath) + "/" + "assets/"
+
+    #print("srcpath: " + assetsAbsolutePath)
+    #print("destpath: " + absoluteDestinationPath)
 
     fromName_bearEscaped = bearEscapeDirectoryName(fromName)
     toName_bearEscaped = bearEscapeDirectoryName(toName)
