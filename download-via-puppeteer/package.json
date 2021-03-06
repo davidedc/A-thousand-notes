@@ -5,8 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "puppeteer": "^1.0.0",
+    "turndown": "^7.0.0"
   },
-  "devDependencies": {},
   "scripts": {
     "run": "node download-via-puppeteer.js"
   },
