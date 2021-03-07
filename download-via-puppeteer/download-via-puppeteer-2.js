@@ -1,7 +1,7 @@
 // Example:
-//   node download-via-puppeteer.js "https://twitter.com/ntsutae/status/1367089088315068419"
+//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" > inspect-tewet-markdown.md
 // or
-//   node download-via-puppeteer.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc -f html --extract-media ./assets/thefilename  -t markdown_strict  -o thefilename.md
+//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc | pandoc -f html --extract-media ./assets/thefilename  -t markdown_strict  -o thefilename.md
 
 const puppeteer = require('puppeteer');
 const TurndownService = require('turndown');
@@ -69,6 +69,27 @@ var theArgs = process.argv.slice(2);
   element_property = await insideFrame.getProperty('innerHTML');
 
   pageContentMarkdown = turndownService.turndown(element_property.toString().replaceAll("JSHandle:", "").replaceAll("<svg", "<!--").replaceAll("/svg>", "-->").replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div"));
+
+  // take away all empty links i.e. the privacy link:
+  // [](https://help.twitter.com/en/twitter-for-websites-ads-info-and-privacy)
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/[^!]\[\s*\]\([^\)]*\)/g,"");
+
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/\[\n+/gm,"[");
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/\n+\]/gm,"]");
+
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/\n*(@[^\]]*]\(http)/gm," $1");
+
+  // remove the first line since it's a link to the tweet *embed card*, which is a fairly mangled URL
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/^\[\s*\]\([^\)]*\)/gm,"");
+
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
+  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
+
+
   console.log(pageContentMarkdown)
 
   //console.log(element_property.toString().replaceAll("JSHandle:", "").replaceAll("<svg", "<!--").replaceAll("/svg>", "-->").replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div"))
