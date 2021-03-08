@@ -1,7 +1,7 @@
 // Example:
 //   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" > inspect-tewet-markdown.md
 // or
-//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc | pandoc -f html --extract-media ./assets/thefilename  -t markdown_strict  -o thefilename.md
+//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc -f markdown_strict -t html | pandoc -f html --extract-media ./assets/thefilename  -t markdown_strict  -o thefilename.md
 
 const puppeteer = require('puppeteer');
 const TurndownService = require('turndown');
@@ -68,29 +68,37 @@ var theArgs = process.argv.slice(2);
 
   element_property = await insideFrame.getProperty('innerHTML');
 
-  pageContentMarkdown = turndownService.turndown(element_property.toString().replaceAll("JSHandle:", "").replaceAll("<svg", "<!--").replaceAll("/svg>", "-->").replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div"));
+  element_property_string = element_property.toString().replaceAll("JSHandle:", "");
+  element_property_string = element_property_string.replaceAll("<svg", "<!--").replaceAll("/svg>", "-->");
+  element_property_string = element_property_string.replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div");
+  element_property_string = element_property_string.replaceAll("<div", "\n\n<div");
+
+
+  pageContentMarkdown = turndownService.turndown(element_property_string);
 
   // take away all empty links i.e. the privacy link:
   // [](https://help.twitter.com/en/twitter-for-websites-ads-info-and-privacy)
   pageContentMarkdown = pageContentMarkdown.replaceAll(/[^!]\[\s*\]\([^\)]*\)/g,"");
 
+  
+  // remove some odd spacing in the links created by turndown
+  // because they confuse pandoc
   pageContentMarkdown = pageContentMarkdown.replaceAll(/\[\n+/gm,"[");
   pageContentMarkdown = pageContentMarkdown.replaceAll(/\n+\]/gm,"]");
-
   pageContentMarkdown = pageContentMarkdown.replaceAll(/\n*(@[^\]]*]\(http)/gm," $1");
 
   // remove the first line since it's a link to the tweet *embed card*, which is a fairly mangled URL
   pageContentMarkdown = pageContentMarkdown.replaceAll(/^\[\s*\]\([^\)]*\)/gm,"");
 
-  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
-  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
-  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
-  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
-  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
-  pageContentMarkdown = pageContentMarkdown.replaceAll(/http([s]?:[^\)_]*)_/g,"http$1%5F");
+
+  // just some tests on how to embed/download a video is needed
+  //pageContentMarkdown = pageContentMarkdown + "\n\n![also the video](https://video.twimg.com/ext_tw_video/1367088823839064066/pu/vid/960x630/fkWREbwmsHUjN62t.mp4)"
+
 
 
   console.log(pageContentMarkdown)
+  //console.log(element_property.toString());
+
 
   //console.log(element_property.toString().replaceAll("JSHandle:", "").replaceAll("<svg", "<!--").replaceAll("/svg>", "-->").replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div"))
   //console.log(element_property.toString())
