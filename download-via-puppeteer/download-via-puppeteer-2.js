@@ -99,6 +99,52 @@ var theArgs = process.argv.slice(2);
   console.log(pageContentMarkdown)
   //console.log(element_property.toString());
 
+  const tweetHTML = element_property.toString();
+  //console.log(tweetHTML);
+  const URLsRegexp = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm;
+
+  let m;
+  var theVideoURLs = []
+
+  while ((m = URLsRegexp.exec(tweetHTML)) !== null) {
+      // This is necessary to avoid infinite loops with zero-width matches
+      if (m.index === URLsRegexp.lastIndex) {
+          URLsRegexp.lastIndex++;
+      }
+
+      var results = m.filter(theURL => theURL.includes(".mp4"));
+      
+      // The result can be accessed through the `m`-variable.
+      results.forEach((match) => {
+          console.log(match);
+          theVideoURLs.push(match);
+      });
+  }
+
+
+  var { execSync } = require('child_process');
+  // stderr is sent to stdout of parent process
+  // you can set options.stdio if you want it to go elsewhere
+
+
+  theVideoURLs.forEach((URLwithVideo) => {
+
+      var reg = /\/([^\/]*)\.mp4/ig;
+      var match;
+      var res = [];
+
+      while (match = reg.exec(URLwithVideo)) {
+        res.push(match[1] || match[0]);
+      }
+
+      console.log("video id: " + res);
+
+      var command = 'youtube-dl ' + URLwithVideo
+      console.log(command);
+      var stdout = execSync(command);
+  });
+
+
 
   //console.log(element_property.toString().replaceAll("JSHandle:", "").replaceAll("<svg", "<!--").replaceAll("/svg>", "-->").replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div"))
   //console.log(element_property.toString())
