@@ -1,7 +1,10 @@
 // Example:
 //   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" > inspect-tweet-markdown.md
 // or
-//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc -f markdown_strict -t html | pandoc -f html --extract-media ./assets/thefilename  -t markdown_strict  -o thefilename.md
+//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc -f markdown_strict -t html | pandoc -f html --extract-media ./assets/thefilename  -t markdown_strict -o thefilename.md
+//
+// To install gifify
+//   https://github.com/vvo/gifify
 
 const puppeteer = require('puppeteer');
 const TurndownService = require('turndown');
@@ -91,13 +94,9 @@ var theArgs = process.argv.slice(2);
   pageContentMarkdown = pageContentMarkdown.replaceAll(/^\[\s*\]\([^\)]*\)/gm,"");
 
 
-  // just some tests on how to embed/download a video is needed
-  //pageContentMarkdown = pageContentMarkdown + "\n\n![also the video](https://video.twimg.com/ext_tw_video/1367088823839064066/pu/vid/960x630/fkWREbwmsHUjN62t.mp4)"
 
 
 
-  console.log(pageContentMarkdown)
-  //console.log(element_property.toString());
 
   const tweetHTML = element_property.toString();
   //console.log(tweetHTML);
@@ -131,23 +130,41 @@ var theArgs = process.argv.slice(2);
 
       var reg = /\/([^\/]*)\.mp4/ig;
       var match;
-      var res = [];
+      var videoIDs = [];
 
       while (match = reg.exec(URLwithVideo)) {
-        res.push(match[1] || match[0]);
+        videoIDs.push(match[1] || match[0]);
       }
 
-      console.log("video id: " + res);
+      console.log("video id: " + videoIDs);
 
       var command = 'youtube-dl ' + URLwithVideo
       console.log(command);
       var stdout = execSync(command);
+
+      var command = 'gifify  ' + videoIDs + "-" + videoIDs + ".mp4 -o " + videoIDs + ".gif"
+      console.log(command);
+      var stdout = execSync(command);
+
+      var command = 'mkdir  ./assets/thefilename/'
+      console.log(command);
+      var stdout = execSync(command);
+
+      var command = 'mv  ' + videoIDs + ".gif ./assets/thefilename/"
+      console.log(command);
+      var stdout = execSync(command);
+
+      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/thefilename/"+ videoIDs + ".gif)"
+
   });
 
 
 
   //console.log(element_property.toString().replaceAll("JSHandle:", "").replaceAll("<svg", "<!--").replaceAll("/svg>", "-->").replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div"))
   //console.log(element_property.toString())
+
+  // just some tests on how to embed/download a video is needed
+  console.log(pageContentMarkdown);
 
   buffer = await insideFrame.screenshot(options);
 
