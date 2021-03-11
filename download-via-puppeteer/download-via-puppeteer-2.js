@@ -1,7 +1,7 @@
 // Example:
 //   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" > inspect-tweet-markdown.md
 // or
-//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc -f markdown_strict -t html | pandoc -f html --extract-media ./assets/thefilename  -t markdown_strict -o thefilename.md
+//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc -f markdown_strict -t html | pandoc -f html --extract-media ./assets/${noteFileName}  -t markdown_strict -o ${noteFileName}.md
 //
 // To install gifify
 //   https://github.com/vvo/gifify
@@ -11,6 +11,9 @@ const TurndownService = require('turndown');
 
 const turndownService = new TurndownService();
 var theArgs = process.argv.slice(2);
+
+const tweetURL = theArgs[0];
+const noteFileName = theArgs[1];
 
 (async () => {
 
@@ -35,7 +38,7 @@ var theArgs = process.argv.slice(2);
     deviceScaleFactor: 2,
   });
 
-  const tUrl = `https://publish.twitter.com/?query=${theArgs[0]}&widget=Tweet`;
+  const tUrl = `https://publish.twitter.com/?query=${tweetURL}&widget=Tweet`;
   await page.goto(tUrl, {
     waitUntil: "networkidle2"
   });
@@ -125,6 +128,7 @@ var theArgs = process.argv.slice(2);
   // stderr is sent to stdout of parent process
   // you can set options.stdio if you want it to go elsewhere
 
+  console.dir(theVideoURLs);
 
   theVideoURLs.forEach((URLwithVideo) => {
 
@@ -146,15 +150,15 @@ var theArgs = process.argv.slice(2);
       console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mkdir  ./assets/thefilename/'
+      var command = 'mkdir  ./assets/'+noteFileName+'/'
       console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mv  ' + videoIDs + ".gif ./assets/thefilename/"
+      var command = 'mv  ' + videoIDs + ".gif ./assets/"+noteFileName+"/"
       console.log(command);
       var stdout = execSync(command);
 
-      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/thefilename/"+ videoIDs + ".gif)"
+      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ videoIDs + ".gif)"
 
   });
 
