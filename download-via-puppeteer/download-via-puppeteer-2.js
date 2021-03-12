@@ -10,6 +10,12 @@ const puppeteer = require('puppeteer');
 const TurndownService = require('turndown');
 
 const turndownService = new TurndownService();
+
+function extractRegex(theRegex, strContent) {
+  var arr = theRegex.exec(strContent);
+  return arr[1]; 
+}
+
 var theArgs = process.argv.slice(2);
 
 const tweetURL = theArgs[0];
@@ -91,11 +97,16 @@ const noteFileName = theArgs[1];
   // because they confuse pandoc
   pageContentMarkdown = pageContentMarkdown.replaceAll(/\[\n+/gm,"[");
   pageContentMarkdown = pageContentMarkdown.replaceAll(/\n+\]/gm,"]");
-  pageContentMarkdown = pageContentMarkdown.replaceAll(/\n*(@[^\]]*]\(http)/gm," $1");
+
+  const authorRegex = /\n*(@[^\]]*)]\(http/gm;
+  const author = extractRegex(authorRegex, pageContentMarkdown);
+  pageContentMarkdown = pageContentMarkdown.replaceAll(authorRegex," $1](http");
 
   // remove the first line since it's a link to the tweet *embed card*, which is a fairly mangled URL
   pageContentMarkdown = pageContentMarkdown.replaceAll(/^\[\s*\]\([^\)]*\)/gm,"");
 
+  // add a title
+  pageContentMarkdown = "# Tweet from " + author + "\n\n" + pageContentMarkdown;
 
 
 
@@ -118,7 +129,7 @@ const noteFileName = theArgs[1];
       
       // The result can be accessed through the `m`-variable.
       results.forEach((match) => {
-          console.log(match);
+          //console.log(match);
           theVideoURLs.push(match);
       });
   }
@@ -128,40 +139,41 @@ const noteFileName = theArgs[1];
   // stderr is sent to stdout of parent process
   // you can set options.stdio if you want it to go elsewhere
 
-  console.dir(theVideoURLs);
+  //console.dir(theVideoURLs);
 
   theVideoURLs.forEach((URLwithVideo) => {
 
       var reg = /\/([^\/]*)\.mp4/ig;
       var match;
-      var videoIDs = [];
+      var videoID = [];
 
-      while (match = reg.exec(URLwithVideo)) {
-        videoIDs.push(match[1] || match[0]);
-      }
+      videoID = extractRegex(reg, URLwithVideo);
 
-      console.log("video id: " + videoIDs);
+      //console.log("video id: " + videoID);
 
       var command = 'youtube-dl ' + URLwithVideo
-      console.log(command);
+      //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'gifify  ' + videoIDs + "-" + videoIDs + ".mp4 -o " + videoIDs + ".gif"
-      console.log(command);
+      var command = 'gifify  ' + videoID + "-" + videoID + ".mp4 -o " + videoID + ".gif"
+      //console.log(command);
       var stdout = execSync(command);
 
       var command = 'mkdir  ./assets/'+noteFileName+'/'
-      console.log(command);
+      //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mv  ' + videoIDs + ".gif ./assets/"+noteFileName+"/"
-      console.log(command);
+      var command = 'mv  ' + videoID + ".gif ./assets/"+noteFileName+"/"
+      //console.log(command);
       var stdout = execSync(command);
 
-      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ videoIDs + ".gif)"
+      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ videoID + ".gif)"
 
   });
 
+
+
+  //console.dir(videoURLs);
 
 
   //console.log(element_property.toString().replaceAll("JSHandle:", "").replaceAll("<svg", "<!--").replaceAll("/svg>", "-->").replaceAll("Copy link to Tweet","").replaceAll("<div", "\n\n<div"))
