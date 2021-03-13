@@ -105,8 +105,13 @@ const noteFileName = theArgs[1];
   // remove the first line since it's a link to the tweet *embed card*, which is a fairly mangled URL
   pageContentMarkdown = pageContentMarkdown.replaceAll(/^\[\s*\]\([^\)]*\)/gm,"");
 
+
+  const dateAndTimeRegexp = /\[\s*(\d+:\d+\s+[^\]]*)]\(http/gm;
+  const dateAndTime = extractRegex(dateAndTimeRegexp, pageContentMarkdown);
+
+
   // add a title
-  pageContentMarkdown = "# Tweet from " + author + "\n\n" + pageContentMarkdown;
+  pageContentMarkdown = "# Tweet from " + author + " at " + dateAndTime + "\n\n" + pageContentMarkdown;
 
 
 
