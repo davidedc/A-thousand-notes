@@ -31,10 +31,6 @@ const noteFileName = theArgs[1];
     ]
   });
 
-  const options = {
-    fullPage: false,
-    path: 'buddy-screenshot.png'
-  };
   const page = await browser.newPage();
   let buffer;
 
@@ -115,8 +111,6 @@ const noteFileName = theArgs[1];
 
 
 
-
-
   const tweetHTML = element_property.toString();
   //console.log(tweetHTML);
   const URLsRegexp = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm;
@@ -160,7 +154,13 @@ const noteFileName = theArgs[1];
       //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'gifify  ' + videoID + "-" + videoID + ".mp4 -o " + videoID + ".gif"
+      // this .gif file will be downloaded afterwards by pandoc again (because we get pandoc to download all images)
+      // so we pick a name that makes it clear that we can delete this one.
+      var command = 'gifify  ' + videoID + "-" + videoID + ".mp4 -o " + "delme-delete-me-" + videoID + ".gif"
+      //console.log(command);
+      var stdout = execSync(command);
+
+      var command = 'rm ' + videoID + "-" + videoID + ".mp4"
       //console.log(command);
       var stdout = execSync(command);
 
@@ -168,15 +168,30 @@ const noteFileName = theArgs[1];
       //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mv  ' + videoID + ".gif ./assets/"+noteFileName+"/"
+      var command = 'mv ' + "delme-delete-me-" + videoID + ".gif ./assets/"+noteFileName+"/"
       //console.log(command);
       var stdout = execSync(command);
 
-      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ videoID + ".gif)"
+      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ "delme-delete-me-" + videoID + ".gif)"
 
   });
 
 
+
+  const screenshotOptions = {
+    fullPage: false,
+    path: noteFileName + '-screenshot.png'
+  };
+
+  buffer = await insideFrame.screenshot(screenshotOptions);
+
+  pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ noteFileName + "-screenshot.png)"
+
+  var command = 'mv ' + noteFileName + "-screenshot.png ./assets/"+noteFileName+"/"
+  //console.log(command);
+  var stdout = execSync(command);
+
+  pageContentMarkdown = pageContentMarkdown + "\n\n" + tweetURL
 
   //console.dir(videoURLs);
 
@@ -187,7 +202,6 @@ const noteFileName = theArgs[1];
   // just some tests on how to embed/download a video is needed
   console.log(pageContentMarkdown);
 
-  buffer = await insideFrame.screenshot(options);
 
   await browser.close();
 
