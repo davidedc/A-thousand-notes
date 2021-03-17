@@ -18,8 +18,9 @@ function extractRegex(theRegex, strContent) {
 
 var theArgs = process.argv.slice(2);
 
-const tweetURL = theArgs[0];
-const noteFileName = theArgs[1];
+const destinationPath = theArgs[0];
+const tweetURL = theArgs[1];
+const noteFileName = theArgs[2];
 
 (async () => {
 
@@ -164,11 +165,11 @@ const noteFileName = theArgs[1];
       //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mkdir  ./assets/'+noteFileName+'/'
+      var command = 'mkdir  ' + destinationPath + '/assets/'+ noteFileName + '/'
       //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mv ' + "delme-delete-me-" + videoID + ".gif ./assets/"+noteFileName+"/"
+      var command = 'mv ' + "delme-delete-me-" + videoID + ".gif " + destinationPath + "/assets/"+noteFileName+"/"
       //console.log(command);
       var stdout = execSync(command);
 
@@ -187,7 +188,7 @@ const noteFileName = theArgs[1];
 
   pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ noteFileName + "-screenshot.png)"
 
-  var command = 'mv ' + noteFileName + "-screenshot.png ./assets/"+noteFileName+"/"
+  var command = 'mv ' + noteFileName + "-screenshot.png " + destinationPath + "/assets/"+noteFileName+"/"
   //console.log(command);
   var stdout = execSync(command);
 
