@@ -3,3 +3,7 @@
 *.pyc
 node_modules/
 downloaded/
+download/downloads/
+download/download-google-images/downloads copy/
+download/download-google-images/downloads/
+download/download-google-images/simple_images/
