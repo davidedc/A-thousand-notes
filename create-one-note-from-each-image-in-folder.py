@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # Example:
-#   python create-one-note-around-each-image.py simple_images/bear/* -v downloads
+#   python create-one-note-from-each-image-in-folder.py simple_images/bear/* -v downloads
 
 import sys
 import os
@@ -10,7 +10,7 @@ import codecs
 import argparse
 
 # enables to import from upper directory
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+# sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 from helper_routines import checkPath
 from helper_routines import getFileNames
