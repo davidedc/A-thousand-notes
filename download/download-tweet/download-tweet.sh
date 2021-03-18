@@ -1,5 +1,5 @@
 # Example
-#   sh download-tweet.sh ../downloaded  "https://twitter.com/ntsutae/status/1367089088315068419"
+#   sh download-tweet.sh ../downloads  "https://twitter.com/ntsutae/status/1367089088315068419"
 
 theNoteName="note-tweet-$RANDOM$RANDOM"
 
@@ -13,7 +13,7 @@ theNoteName="note-tweet-$RANDOM$RANDOM"
 # Second part of the pipe:
 #   downloads all the images related to the tweet so it's all local
 
-theMarkdown=$(node download-via-puppeteer-2.js $1 $2 $theNoteName)
+theMarkdown=$(node download-tweet.js $1 $2 $theNoteName)
 pushd $1
 pandoc -f markdown_strict --extract-media $1/assets/$theNoteName  -t markdown_strict -o $theNoteName.md <<< "$theMarkdown"
 popd

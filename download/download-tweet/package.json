@@ -1,5 +1,5 @@
 {
-  "name": "download-via-puppeteer",
+  "name": "download-tweet",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,8 +8,8 @@
     "turndown": "^7.0.0"
   },
   "scripts": {
-    "run": "node download-via-puppeteer.js"
+    "run": "node download-tweet.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
