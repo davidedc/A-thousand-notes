@@ -193,9 +193,10 @@ const noteFileName = theArgs[2];
   var stdout = execSync(command);
 
   if (theVideoURLs.length != 0){
-	  pageContentMarkdown = pageContentMarkdown + "\n\nVideos in tweet:"
+	  pageContentMarkdown = pageContentMarkdown + "\n\nVideos in tweet:\n"
 	  theVideoURLs.forEach((URLwithVideo) => {
-	      pageContentMarkdown = pageContentMarkdown + "\n- " + URLwithVideo
+	      pageContentMarkdown = pageContentMarkdown + "\n"
+	      pageContentMarkdown = pageContentMarkdown + "- <" + URLwithVideo + ">"
 	  });
   }
 
