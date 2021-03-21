@@ -17,3 +17,4 @@ theMarkdown=$(node download-tweet.js $1 $2 $theNoteName)
 pushd $1
 pandoc -f markdown_strict --extract-media $1/assets/$theNoteName  -t markdown_strict -o $theNoteName.md <<< "$theMarkdown"
 popd
+python ../../wrap-in-tag-line-and-footer.py "$1/$theNoteName.md"
