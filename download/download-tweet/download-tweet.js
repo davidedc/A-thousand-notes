@@ -151,29 +151,54 @@ const noteFileName = theArgs[2];
 
       //console.log("video id: " + videoID);
 
-      var command = 'youtube-dl ' + URLwithVideo
+      var command = 'youtube-dl ' + URLwithVideo;
       //console.log(command);
       var stdout = execSync(command);
+
+      var gifVersion = 0;
+
+      var command = 'mkdir  ' + destinationPath + '/assets/'+ noteFileName + '/';
+      //console.log(command);
+      var stdout = execSync(command);
+
+      // ------------------------------------------------
+
+      gifVersion++;
 
       // this .gif file will be downloaded afterwards by pandoc again (because we get pandoc to download all images)
       // so we pick a name that makes it clear that we can delete this one.
-      var command = 'gifify  ' + videoID + "-" + videoID + ".mp4 -o " + "delme-delete-me-" + videoID + ".gif"
+      var command = 'gifify  ' + videoID + "-" + videoID + ".mp4 -o " + "delme-delete-me-" + gifVersion + "" + videoID + ".gif";
       //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'rm ' + videoID + "-" + videoID + ".mp4"
+      var command = 'mv ' + "delme-delete-me-" + gifVersion + "" + videoID + ".gif " + destinationPath + "/assets/"+noteFileName+"/";
       //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mkdir  ' + destinationPath + '/assets/'+ noteFileName + '/'
+      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ "delme-delete-me-" + gifVersion + "" + videoID + ".gif)";
+
+      // ------------------------------------------------
+
+      gifVersion++;
+
+      // this .gif file will be downloaded afterwards by pandoc again (because we get pandoc to download all images)
+      // so we pick a name that makes it clear that we can delete this one.
+      var command = 'gifify  ' + videoID + "-" + videoID + ".mp4 --resize 350:-1 --fps 20 -o " + "delme-delete-me-" + gifVersion + "" + videoID + ".gif";
       //console.log(command);
       var stdout = execSync(command);
 
-      var command = 'mv ' + "delme-delete-me-" + videoID + ".gif " + destinationPath + "/assets/"+noteFileName+"/"
+      var command = 'mv ' + "delme-delete-me-" + gifVersion + "" + videoID + ".gif " + destinationPath + "/assets/"+noteFileName+"/";
       //console.log(command);
       var stdout = execSync(command);
 
-      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ "delme-delete-me-" + videoID + ".gif)"
+      pageContentMarkdown = pageContentMarkdown + "\n\n![](assets/"+noteFileName+"/"+ "delme-delete-me-" + gifVersion + "" + videoID + ".gif)";
+
+      // ------------------------------------------------
+
+      var command = 'rm ' + videoID + "-" + videoID + ".mp4";
+      //console.log(command);
+      var stdout = execSync(command);
+
 
   });
 
