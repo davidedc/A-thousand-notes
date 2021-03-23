@@ -1,7 +1,7 @@
 // Example:
-//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" > inspect-tweet-markdown.md
+//   node download-tweet.js destinationPath "https://twitter.com/ntsutae/status/1367089088315068419" noteFileName > inspect-tweet-markdown.md
 // or
-//   node download-via-puppeteer-2.js "https://twitter.com/ntsutae/status/1367089088315068419" | pandoc -f markdown_strict -t html | pandoc -f html --extract-media ./assets/${noteFileName}  -t markdown_strict -o ${noteFileName}.md
+//   node download-tweet.js destinationPath "https://twitter.com/ntsutae/status/1367089088315068419" noteFileName | pandoc -f markdown_strict -t html | pandoc -f html --extract-media ./assets/${noteFileName}  -t markdown_strict -o ${noteFileName}.md
 //
 // To install gifify
 //   https://github.com/vvo/gifify
@@ -95,7 +95,7 @@ const noteFileName = theArgs[2];
   pageContentMarkdown = pageContentMarkdown.replaceAll(/\[\n+/gm,"[");
   pageContentMarkdown = pageContentMarkdown.replaceAll(/\n+\]/gm,"]");
 
-  const authorRegex = /\n*(@[^\]]*)]\(http/gm;
+  const authorRegex = /\s*(@[^\]]*)]\(http/gm;
   const author = extractRegex(authorRegex, pageContentMarkdown);
   pageContentMarkdown = pageContentMarkdown.replaceAll(authorRegex," $1](http");
 
