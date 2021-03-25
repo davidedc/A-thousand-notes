@@ -1,6 +1,10 @@
 # coding=utf-8
+#
+# As Pandoc downloads all the assets related to the tweet, for some strange reason it mangles the markdown
+# of the tweet slightly. This script adjusts those defects.
+#
 # Example:
-#    TODO
+#    python final-cleanup-tweet-markdown.py path-of-note
 
 
 import sys
@@ -27,7 +31,7 @@ from helper_routines import sanitizeFileName
 from helper_routines import mySlugify
 
 
-parser = argparse.ArgumentParser(description="TODO", formatter_class=RawTextHelpFormatter)
+parser = argparse.ArgumentParser(description="clean up some defects introduced by pandoc as it downloads the assets related to the tweet", formatter_class=RawTextHelpFormatter)
 parser.add_argument('path', help="note's path")
 args = parser.parse_args()
 
@@ -38,8 +42,13 @@ with codecs.open(args.path, 'r', encoding='utf-8') as file:
     theMarkdown = file.read()
     file.close()
 
+newMarkdown = theMarkdown
 
-newMarkdown = re.sub(r'\s*(@[^\]]*)]\(http', r' \1](http', theMarkdown)
+# fix author's link gets broken over two lines
+newMarkdown = re.sub(r'\s*(@[^\]]*)]\(http', r' \1](http', newMarkdown)
+# fix date of tweet link broken over two lines
+newMarkdown = re.sub(r'\n*(20[0-9][0-9])\]\(http', r' \1](http', newMarkdown)
+
 
 
 with codecs.open(args.path, 'w', encoding='utf-8') as fileW:
