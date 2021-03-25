@@ -218,7 +218,7 @@ const noteFileName = theArgs[2];
   var stdout = execSync(command);
 
   if (theVideoURLs.length != 0){
-	  pageContentMarkdown = pageContentMarkdown + "\n\nVideos in tweet:\n"
+	  pageContentMarkdown = pageContentMarkdown + "\n\nVideo(s) in tweet:\n"
 	  theVideoURLs.forEach((URLwithVideo) => {
 	      pageContentMarkdown = pageContentMarkdown + "\n"
 	      pageContentMarkdown = pageContentMarkdown + "- <" + URLwithVideo + ">"
