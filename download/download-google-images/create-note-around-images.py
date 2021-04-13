@@ -10,7 +10,7 @@ import codecs
 import argparse
 
 # enables to import from upper directory
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 
 from helper_routines import checkPath
 from helper_routines import getFileNames

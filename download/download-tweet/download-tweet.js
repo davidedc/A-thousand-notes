@@ -101,6 +101,8 @@ const noteFileName = theArgs[2];
 
   // remove the first line since it's a link to the tweet *embed card*, which is a fairly mangled URL
   pageContentMarkdown = pageContentMarkdown.replaceAll(/^\[\s*\]\([^\)]*\)/gm,"");
+  //console.log(pageContentMarkdown);
+  //process.exit();
 
 
   const dateAndTimeRegexp = /\[\s*(\d+:\d+\s+[^\]]*)]\(http/gm;
@@ -141,6 +143,10 @@ const noteFileName = theArgs[2];
 
   //console.dir(theVideoURLs);
 
+  var command = 'mkdir  ' + destinationPath + '/assets/'+ noteFileName + '/';
+  //console.log(command);
+  var stdout = execSync(command);
+
   theVideoURLs.forEach((URLwithVideo) => {
 
       var reg = /\/([^\/]*)\.mp4/ig;
@@ -156,10 +162,6 @@ const noteFileName = theArgs[2];
       var stdout = execSync(command);
 
       var gifVersion = 0;
-
-      var command = 'mkdir  ' + destinationPath + '/assets/'+ noteFileName + '/';
-      //console.log(command);
-      var stdout = execSync(command);
 
       // ------------------------------------------------
 
