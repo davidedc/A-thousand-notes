@@ -1,7 +1,7 @@
 # from https://gist.github.com/jthigpen/5067358
 # takes an Apple Notes folder and extracts all its notes into html in a single TextEdit window
 # you can then save as an html, and/or manipulate further.
-# There is another more complex script of this king on github
+# There is another more complex script of this kind on github
 #   https://github.com/mattrose/AppleNotes2Joplin/blob/main/AppleNotes2Joplin.applescript
 # however it doesn't quite work for me.
 
